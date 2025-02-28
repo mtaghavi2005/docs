@@ -36,16 +36,31 @@ The Dapr sidecar doesn’t load any workflow definitions. Rather, the sidecar si
 
 <!--python-->
 
-Define the workflow activities you'd like your workflow to perform. Activities are a function definition and can take inputs and outputs. The following example creates a counter (activity) called `hello_act` that notifies users of the current counter value. `hello_act` is a function derived from a class called `WorkflowActivityContext`.
+Define the workflow activities you'd like your workflow to perform. Activities are a function definition and can take inputs and outputs. The following example creates task chaining activities that receive input
 
 ```python
-def hello_act(ctx: WorkflowActivityContext, input):
-    global counter
-    counter += input
-    print(f'New counter value is: {counter}!', flush=True)
+@wfr.activity(name='step10')
+def step1(ctx, activity_input):
+    print(f'Step 1: Received input: {activity_input}.')
+    # Do some work
+    return activity_input + 1
+
+
+@wfr.activity
+def step2(ctx, activity_input):
+    print(f'Step 2: Received input: {activity_input}.')
+    # Do some work
+    return activity_input * 2
+
+
+@wfr.activity
+def step3(ctx, activity_input):
+    print(f'Step 3: Received input: {activity_input}.')
+    # Do some work
+    return activity_input ^ 2
 ```
 
-[See the `hello_act` workflow activity in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL40C1-L43C59)
+[See the task chaining workflow activity in context.](https://github.com/dapr/python-sdk/blob/main/examples/workflow/task_chaining.py)
 
 
 {{% /codetab %}}
@@ -226,16 +241,19 @@ Next, register and call the activites in a workflow.
 
 <!--python-->
 
-The `hello_world_wf` function is derived from a class called `DaprWorkflowContext` with input and output parameter types. It also includes a `yield` statement that does the heavy lifting of the workflow and calls the workflow activities. 
+The `random_workflow` function is a task chaining workflow pattern derived from a class called `DaprWorkflowContext` with input and output parameter types. It also includes a `yield` statement that does the heavy lifting of the workflow and calls the workflow activities. 
  
 ```python
-def hello_world_wf(ctx: DaprWorkflowContext, input):
-    print(f'{input}')
-    yield ctx.call_activity(hello_act, input=1)
-    yield ctx.call_activity(hello_act, input=10)
-    yield ctx.wait_for_external_event("event1")
-    yield ctx.call_activity(hello_act, input=100)
-    yield ctx.call_activity(hello_act, input=1000)
+@wfr.workflow(name='random_workflow')
+def task_chain_workflow(ctx: wf.DaprWorkflowContext, wf_input: int):
+    try:
+        result1 = yield ctx.call_activity(step1, input=wf_input)
+        result2 = yield ctx.call_activity(step2, input=result1)
+        result3 = yield ctx.call_activity(step3, input=result2)
+    except Exception as e:
+        yield ctx.call_activity(error_handler, input=str(e))
+        raise
+    return [result1, result2, result3]
 ```
 
 [See the `hello_world_wf` workflow in context.](https://github.com/dapr/python-sdk/blob/master/examples/demo_workflow/app.py#LL32C1-L38C51)
@@ -409,82 +427,77 @@ Finally, compose the application using the workflow.
 
 - A Python package called `DaprClient` to receive the Python SDK capabilities.
 - A builder with extensions called:
-  - `WorkflowRuntime`: Allows you to register workflows and workflow activities
-  - `DaprWorkflowContext`: Allows you to [create workflows]({{< ref "#write-the-workflow" >}})
+  - `WorkflowRuntime`: Allows you to register the workflow runtime. 
+  - `DaprWorkflowContext`: Allows you to [create workflows and workflow activities]({{< ref "#write-the-workflow" >}})
   - `WorkflowActivityContext`: Allows you to [create workflow activities]({{< ref "#write-the-workflow-activities" >}})
 - API calls. In the example below, these calls start, pause, resume, purge, and terminate the workflow.
  
 ```python
-from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowContext, WorkflowActivityContext
-from dapr.clients import DaprClient
+from durabletask import worker, task
 
-# ...
+from dapr.ext.workflow.workflow_context import Workflow
+from dapr.ext.workflow.dapr_workflow_context import DaprWorkflowContext
+from dapr.ext.workflow.workflow_activity_context import Activity, WorkflowActivityContext
+from dapr.ext.workflow.util import getAddress
 
-def main():
-    with DaprClient() as d:
-        host = settings.DAPR_RUNTIME_HOST
-        port = settings.DAPR_GRPC_PORT
-        workflowRuntime = WorkflowRuntime(host, port)
-        workflowRuntime = WorkflowRuntime()
-        workflowRuntime.register_workflow(hello_world_wf)
-        workflowRuntime.register_activity(hello_act)
-        workflowRuntime.start()
+from dapr.clients import DaprInternalError
+from dapr.clients.http.client import DAPR_API_TOKEN_HEADER
+from dapr.conf import settings
+from dapr.conf.helpers import GrpcEndpoint
+from dapr.ext.workflow.logger import LoggerOptions, Logger
 
-        # Start workflow
-        print("==========Start Counter Increase as per Input:==========")
-        start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
-                        workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
-        print(f"start_resp {start_resp.instance_id}")
+wfr = wf.WorkflowRuntime()
 
-        # ...
+  @wfr.workflow(name='hello_world_wf')
+  def hello_world_wf(ctx: DaprWorkflowContext, wf_input):
+     # Workflow definition...
 
-        # Pause workflow
-        d.pause_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        print(f"Get response from {workflowName} after pause call: {getResponse.runtime_status}")
+  @wfr.activity(name='hello_act')
+  def hello_act(ctx: WorkflowActivityContext, wf_input):
+     # Activity definition...
 
-        # Resume workflow
-        d.resume_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        print(f"Get response from {workflowName} after resume call: {getResponse.runtime_status}")
-        
-        sleep(1)
-        # Raise workflow
-        d.raise_workflow_event(instance_id=instanceId, workflow_component=workflowComponent,
-                    event_name=eventName, event_data=eventData)
+      # Start workflow
+      wfr = WorkflowRuntime()
+      wfr.start()
+      wf_client = DaprWorkflowClient()
 
-        sleep(5)
-        # Purge workflow
-        d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        try:
-            getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        except DaprInternalError as err:
-            if nonExistentIDError in err._message:
-                print("Instance Successfully Purged")
+      # ...
 
-        # Kick off another workflow for termination purposes 
-        start_resp = d.start_workflow(instance_id=instanceId, workflow_component=workflowComponent,
-                        workflow_name=workflowName, input=inputData, workflow_options=workflowOptions)
-        print(f"start_resp {start_resp.instance_id}")
+      # Pause workflow
+      wf_client.pause_workflow(instance_id=instance_id)
+      metadata = wf_client.get_workflow_state(instance_id=instance_id)
+      # ... check status ...
+      wf_client.resume_workflow(instance_id=instance_id)
+      
+      sleep(1)
 
-        # Terminate workflow
-        d.terminate_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        sleep(1)
-        getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        print(f"Get response from {workflowName} after terminate call: {getResponse.runtime_status}")
+      # Raise workflow
+      wf_client.raise_workflow_event(
+         instance_id=instance_id,
+         event_name=event_name,
+         data=event_data
+      )
 
-        # Purge workflow
-        d.purge_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        try:
-            getResponse = d.get_workflow(instance_id=instanceId, workflow_component=workflowComponent)
-        except DaprInternalError as err:
-            if nonExistentIDError in err._message:
-                print("Instance Successfully Purged")
+      # Purge workflow
+      state = wf_client.wait_for_workflow_completion(
+          instance_id,
+          timeout_in_seconds=30
+      )
+      wf_client.purge_workflow(instance_id=instance_id)
 
-        workflowRuntime.shutdown()
+      workflowRuntime.shutdown()
 
 if __name__ == '__main__':
-    main()
+    wfr.start()
+    sleep(10)  # wait for workflow runtime to start
+
+    wf_client = wf.DaprWorkflowClient()
+    instance_id = wf_client.schedule_new_workflow(workflow=task_chain_workflow, input=42)
+    print(f'Workflow started. Instance ID: {instance_id}')
+    state = wf_client.wait_for_workflow_completion(instance_id)
+    print(f'Workflow completed! Status: {state.runtime_status}')
+
+    wfr.shutdown()
 ```
 
 
