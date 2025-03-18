@@ -203,7 +203,7 @@ As messages are sent to the given message handler code, there is no concept of r
 
 The example below shows the different ways to stream subscribe to a topic.
 
-{{< tabs .NET Python Go >}}
+{{< tabs ".NET" Python Go >}}
 
 {{% codetab %}}
 
