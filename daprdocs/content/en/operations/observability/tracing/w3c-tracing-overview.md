@@ -73,17 +73,35 @@ tracestate: congo=t61rcWkgMzE
 
 [Learn more about the tracestate fields details](https://www.w3.org/TR/trace-context/#tracestate-header).
 
-**Baggage header**
+**Baggage Support**
 
-Dapr supports [W3C Baggage](https://www.w3.org/TR/baggage/) for propagating key-value pairs alongside trace context. The baggage header allows you to attach metadata to trace context that needs to be propagated throughout your distributed system, such as user IDs, tenant information, or environment details.
+Dapr supports [W3C Baggage](https://www.w3.org/TR/baggage/) for propagating key-value pairs alongside trace context through two distinct mechanisms:
 
-The header value follows the W3C Baggage specification format:
+1. **Context Baggage (OpenTelemetry)**
+   - Follows OpenTelemetry conventions with decoded values
+   - Used when propagating baggage through application context
+   - Values are stored in their original, unencoded form
+   - Example of how it would be printed with OpenTelemetry APIs:
+     ```
+     baggage: userId=cassie,serverNode=DF 28,isVIP=true
+     ```
 
-```
-baggage: userId=alice,serverNode=DF%2028,isVIP=true
-```
+2. **HTTP Header Baggage**
+   - You must URL encode special characters (for example, `%20` for spaces, `%2F` for slashes) when setting header baggage
+   - Values remain percent-encoded in HTTP headers as required by the W3C Baggage spec
+   - Values stay encoded when inspecting raw headers in Dapr
+   - Only OpenTelemetry APIs like `otelbaggage.Parse()` will decode the values
+   - Example (note the URL-encoded space `%20`):
+     ```bash
+     curl -X POST http://localhost:3500/v1.0/invoke/serviceB/method/hello \
+       -H "Content-Type: application/json" \
+       -H "baggage: userId=cassie,serverNode=DF%2028,isVIP=true" \
+       -d '{"message": "Hello service B"}'
+     ```
 
-Multiple baggage headers are supported and will be combined according to the W3C specification. Dapr automatically propagates baggage headers across service calls.
+For security purposes, context baggage and header baggage are strictly separated and never merged between domains. This ensures that baggage values maintain their intended format and security properties in each domain.
+
+Multiple baggage headers are supported and will be combined according to the W3C specification. Dapr automatically propagates baggage across service calls while maintaining the appropriate encoding for each domain.
 
 {{% /codetab %}}
 
@@ -93,17 +111,30 @@ Multiple baggage headers are supported and will be combined according to the W3C
 
 In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
-**Baggage metadata**
+**Baggage Support**
 
-Dapr supports [W3C Baggage](https://www.w3.org/TR/baggage/) for propagating key-value pairs alongside trace context. The baggage metadata allows you to attach metadata to trace context that needs to be propagated throughout your distributed system, such as user IDs, tenant information, or environment details.
+Dapr supports [W3C Baggage](https://www.w3.org/TR/baggage/) for propagating key-value pairs alongside trace context through two distinct mechanisms:
 
-The metadata value follows the W3C Baggage specification format:
+1. **Context Baggage (OpenTelemetry)**
+   - Follows OpenTelemetry conventions with decoded values
+   - Used when propagating baggage through gRPC context
+   - Values are stored in their original, unencoded form
+   - Example of how it would be printed with OpenTelemetry APIs:
+     ```
+     baggage: userId=cassie,serverNode=DF 28,isVIP=true
+     ```
 
-```
-baggage: userId=alice,serverNode=DF%2028,isVIP=true
-```
+2. **gRPC Metadata Baggage**
+   - You must URL encode special characters (for example, `%20` for spaces, `%2F` for slashes) when setting metadata baggage
+   - Values remain percent-encoded in gRPC metadata
+   - Example (note the URL-encoded space `%20`):
+     ```
+     baggage: userId=cassie,serverNode=DF%2028,isVIP=true
+     ```
 
-Multiple baggage metadata entries are supported and will be combined according to the W3C specification. Dapr automatically propagates baggage metadata across service calls.
+For security purposes, context baggage and metadata baggage are strictly separated and never merged between domains. This ensures that baggage values maintain their intended format and security properties in each domain.
+
+Multiple baggage metadata entries are supported and will be combined according to the W3C specification. Dapr automatically propagates baggage across service calls while maintaining the appropriate encoding for each domain.
 
 {{% /codetab %}}
 
