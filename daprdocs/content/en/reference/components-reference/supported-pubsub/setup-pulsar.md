@@ -94,6 +94,7 @@ The above example uses secrets as plain strings. It is recommended to use a [sec
 | subscribeInitialPosition | N | Subscription position is the initial position which the cursor is set when start consuming. Default: `"latest"` | `"latest"`, `"earliest"` |
 | partitionKey | N | Sets the key of the message for routing policy. Default: `""` | |
 | `maxConcurrentHandlers` | N  | Defines the maximum number of concurrent message handlers. Default: `100` | `10`
+| replicateSubscriptionState | N | Enable replication of subscription state across geo-replicated Pulsar clusters. Default: `"false"` | `"true"`, `"false"` |
 
 ### Authenticate using Token
 
