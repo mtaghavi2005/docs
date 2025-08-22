@@ -144,6 +144,11 @@ Here are examples of both mechanisms:
 **1. Using Context Baggage (OpenTelemetry)**
 
 When using OpenTelemetry SDK:
+
+{{< tabpane text=true >}}
+
+{{% tab header="Go" %}}
+
 ```go
 import 	otelbaggage "go.opentelemetry.io/otel/baggage"
 
@@ -214,6 +219,10 @@ ctx = grpcMetadata.AppendToOutgoingContext(ctx,
     "baggage", "userID=cassie,serverNode=DF%2028",
 )
 ```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 #### Common Use Cases
 
