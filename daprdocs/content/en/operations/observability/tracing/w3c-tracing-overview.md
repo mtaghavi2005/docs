@@ -47,9 +47,9 @@ When a request arrives without a trace ID, Dapr creates a new one. Otherwise, it
 ### W3C trace headers
 These are the specific trace context headers that are generated and propagated by Dapr for HTTP and gRPC.
 
-{{< tabs "HTTP" "gRPC" >}}
- <!-- HTTP -->
-{{% codetab %}}
+{{< tabpane text=true >}}
+
+{{% tab "HTTP" %}}
 
 Copy these headers when propagating a trace context header from an HTTP response to an HTTP request:
 
@@ -103,11 +103,9 @@ For security purposes, context baggage and header baggage are strictly separated
 
 Multiple baggage headers are supported and will be combined according to the W3C specification. Dapr automatically propagates baggage across service calls while maintaining the appropriate encoding for each domain.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-
- <!-- gRPC -->
-{{% codetab %}}
+{{% tab "gRPC" %}}
 
 In the gRPC API calls, trace context is passed through `grpc-trace-bin` header.
 
@@ -136,10 +134,10 @@ For security purposes, context baggage and metadata baggage are strictly separat
 
 Multiple baggage metadata entries are supported and will be combined according to the W3C specification. Dapr automatically propagates baggage across service calls while maintaining the appropriate encoding for each domain.
 
-{{% /codetab %}}
+{{% /tab %}}
 
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Related Links
-- [Learn more about distributed tracing in Dapr]({{< ref tracing-overview.md >}})
+- [Learn more about distributed tracing in Dapr]({{% ref tracing-overview.md %}})
 - [W3C Trace Context specification](https://www.w3.org/TR/trace-context/)
