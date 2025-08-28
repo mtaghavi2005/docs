@@ -127,7 +127,7 @@ The ID of the activity actor is the ID of the workflow combined with a sequence 
 For example, if a workflow has an ID of `876bf371` and is the third activity to be scheduled by the workflow, it's ID will be `876bf371::2::1` where `2` is the sequence number, and `1` is the generation.
 If the activity is scheduled again after a `continue as new`, the ID will be `876bf371::2::2`.
 
-Not state is stored by activity actors, and instead all resulting data is sent back to the parent workflow actor.
+No state is stored by activity actors, and instead all resulting data is sent back to the parent workflow actor.
 
 The following diagram illustrates the typical lifecycle of an activity actor.
 
@@ -219,7 +219,7 @@ spec:
 ```
 
 {{% alert title="Important" color="warning" %}}
-Also, the Dapr Workflow engine requires that all instances of each workflow app register the exact same set of workflows and activities.
+The Dapr Workflow engine requires that all instances of a workflow app register the exact same set of workflows and activities.
 In other words, it's not possible to scale certain workflows or activities independently.
 All workflows and activities within an app must be scaled together.
 {{% /alert %}}
@@ -241,7 +241,7 @@ Expected sources of high latency include:
 
 See the [Reminder usage and execution guarantees section]({{% ref "workflow-architecture.md#reminder-usage-and-execution-guarantees" %}}) for more details on how the design of workflow actors may impact execution latency.
 
-## Incrasing scheduling throughput
+## Increasing scheduling throughput
 
 By default, when a client schedules a workflow, the workflow engine will wait for the workflow to be fully started before returning a response to the client.
 Waiting for the workflow to start before returning can decrease the scheduling throughput of workflows.
