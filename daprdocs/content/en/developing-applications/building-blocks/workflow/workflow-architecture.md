@@ -245,7 +245,7 @@ See the [Reminder usage and execution guarantees section]({{% ref "workflow-arch
 
 By default, when a client schedules a workflow, the workflow engine waits for the workflow to be fully started before returning a response to the client.
 Waiting for the workflow to start before returning can decrease the scheduling throughput of workflows.
-When scheduling a workflow with a start time, the workflow engine will not wait for the workflow to start before returning a response to the client.
+When scheduling a workflow with a start time, the workflow engine does not wait for the workflow to start before returning a response to the client.
 To increase scheduling throughput, consider adding a start time of "now" when scheduling a workflow.
 An example of scheduling a workflow with a start time of "now" in the Go SDK is shown below:
 
