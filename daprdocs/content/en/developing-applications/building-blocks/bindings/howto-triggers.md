@@ -123,6 +123,8 @@ The following example demonstrates how to configure an input binding using ASP.N
 
 The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
 
+The following example demonstrates how to configure an input binding using ASP.NET Core controllers.
+
 ```csharp
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -141,6 +143,15 @@ public sealed class CheckoutServiceController : ControllerBase
         return $"CID{orderId}";
     }
 }
+```
+
+The following example demonstrates how to configure the same input binding using a minimal API approach:
+```csharp
+app.MapPost("checkout", ([FromBody] int orderId) =>
+{
+    Console.WriteLine($"Received Message: {orderId}");
+    return $"CID{orderId}"
+});
 ```
 
 The following example demonstrates how to configure the same input binding using a minimal API approach:
