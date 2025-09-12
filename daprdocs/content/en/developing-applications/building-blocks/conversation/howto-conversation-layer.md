@@ -56,7 +56,7 @@ spec:
 
 ## Connect the conversation client
 
-The following examples use [the Dapr SDK client instead]({{% ref "#related-links" %}}) to interact with LLMs.
+The following examples use the Dapr SDK client to interact with LLMs.
 
 {{< tabpane text=true >}}
 
