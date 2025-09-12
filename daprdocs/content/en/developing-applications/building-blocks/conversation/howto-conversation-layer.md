@@ -324,7 +324,7 @@ The conversation API supports the following features:
 
 To learn how to enable these features, see the [conversation API reference guide]({{% ref conversation_api %}}).
 
-## Related links
+## Conversation API examples in Dapr SDK repositories
 
 Try out the conversation API using the full examples provided in the supported SDK repos.
 
