@@ -96,7 +96,7 @@ If `multipleKeyValuesPerSecret` is `true`, the secret store parses JSON content 
 Requesting the same `database-credentials` secret from above, the response breaks the JSON object into its own entries, allowing it to be parsed into multiple key-value pairs.
 
 ```bash
-$ curl http://localhost:3501/v1.0/secrets/awssecretmanager/database-credentials
+$ curl http://localhost:3500/v1.0/secrets/awssecretmanager/database-credentials
 {
   "username": "admin",
   "password": "secret123", 
