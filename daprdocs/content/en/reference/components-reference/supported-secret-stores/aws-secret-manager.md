@@ -64,7 +64,7 @@ Query Parameter | Description
 
 Setup AWS Secrets Manager using the AWS documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html.
 
-## Multiple key-values per secret
+## Configure multiple key-values per secret
 
 The `multipleKeyValuesPerSecret` flag determines whether the secret store presents a single value or multiple key-value pairs per secret.
 
