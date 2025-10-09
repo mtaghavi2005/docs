@@ -83,7 +83,7 @@ If `multipleKeyValuesPerSecret` is `false` (default), AWS Secrets Manager return
 Requesting this secret returns the entire JSON as a single value:
 
 ```bash
-$ curl http://localhost:3501/v1.0/secrets/awssecretmanager/database-credentials
+$ curl http://localhost:3500/v1.0/secrets/awssecretmanager/database-credentials
 {
   "database-credentials": "{\"username\":\"admin\",\"password\":\"secret123\",\"host\":\"db.example.com\"}"
 }
