@@ -68,7 +68,7 @@ Setup AWS Secrets Manager using the AWS documentation: https://docs.aws.amazon.c
 
 The `multipleKeyValuesPerSecret` flag determines whether the secret store presents a single value or multiple key-value pairs per secret.
 
-### Single value per secret (default)
+### Single value per secret
 
 If `multipleKeyValuesPerSecret` is `false` (default), AWS Secrets Manager returns the secret value as-is. Given a secret named `database-credentials` with the following JSON content:
 
