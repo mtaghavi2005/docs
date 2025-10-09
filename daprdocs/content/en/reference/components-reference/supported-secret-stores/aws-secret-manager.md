@@ -93,7 +93,7 @@ $ curl http://localhost:3500/v1.0/secrets/awssecretmanager/database-credentials
 
 If `multipleKeyValuesPerSecret` is `true`, the secret store parses JSON content stored in AWS Secrets Manager and returns it as multiple key-value pairs.
 
-Using the same `database-credentials` secret from above, the response would be:
+Requesting the same `database-credentials` secret from above, the response breaks the JSON object into its own entries, allowing it to be parsed into multiple key-value pairs.
 
 ```bash
 $ curl http://localhost:3501/v1.0/secrets/awssecretmanager/database-credentials
