@@ -60,10 +60,6 @@ Query Parameter | Description
 `metadata.version_id` | Version for the given secret key.
 `metadata.version_stage` | Version stage for the given secret key.
 
-## Create an AWS Secrets Manager instance
-
-Setup AWS Secrets Manager using the AWS documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html.
-
 ## Configure multiple key-values per secret
 
 The `multipleKeyValuesPerSecret` flag determines whether the secret store presents a single value or multiple key-value pairs per secret.
@@ -103,6 +99,10 @@ $ curl http://localhost:3500/v1.0/secrets/awssecretmanager/database-credentials
   "host": "db.example.com"
 }
 ```
+
+## Create an AWS Secrets Manager instance
+
+Setup AWS Secrets Manager using the AWS documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html.
 
 ## Related links
 - [Secrets building block]({{% ref secrets %}})
