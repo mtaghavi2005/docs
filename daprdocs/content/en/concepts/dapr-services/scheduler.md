@@ -120,6 +120,14 @@ services:
 Dapr provides a CLI for inspecting and managing all scheduled jobs, regardless of type.
 The CLI is the recommended way to view, back up, and delete jobs.
 
+There are several different types of jobs which Scheduler manages:
+
+- `app/{app-id}/{job-name}`: Jobs created via the [Jobs API]({{% ref jobs_api %}})
+- `actor/{actor-type}/{actor-id}/{reminder-name}`: Actor reminder jobs created via the [Actor Reminders API]({{% ref "actors-timers-reminders#actor-reminders" %}})
+- `activity/{app-id}/{instance-id}::{generation-name}::{activity-index}`: Used internally for [Workflow Activity reminders]({{% ref "workflow-features-concepts.md#workflow-activities" %}})
+- `workflow/{app-id}/{instance-id}/{random-name}`: Used internally for [Workflows]({{% ref "workflow-overview.md" %}}).
+
+Please see [here for how to manage specifically reminders]({{% ref "actors-timers-reminders#managing-reminders-with-the-cli" %}}) with the CLI.
 
 ### List jobs
 
