@@ -95,9 +95,7 @@ spec:
     value: 1
 ```
 
-This component wires the default `DaprChatClient` to OpenAI via the Conversation API. The `{{OPENAI_API_KEY}}` placeholder picks up the value from your `.env` file, so you only need to set the key once. You can also tweak metadata (model, temperature, baseUrl, etc.) to point at compatible OpenAI-style providers.
-
-Replace the placeholder with your actual OpenAI key (either by resolving the template at runtime or by editing the file directly). This API key is essential for agents to communicate with the LLM, as the default chat client talks to OpenAI-compatible endpoints. If you don't have an API key, you can [create one here](https://platform.openai.com/api-keys).
+This component wires the default `DaprChatClient` to OpenAI via the Conversation API. Replace the `{{OPENAI_API_KEY}}` placeholder with your actual OpenAI key by editing the file directly. This API key is essential for agents to communicate with the LLM, as the default chat client talks to OpenAI-compatible endpoints. If you don't have an API key, you can [create one here](https://platform.openai.com/api-keys). You can also tweak metadata (model, temperature, baseUrl, etc.) to point at compatible OpenAI-style providers.
 
 ### 3. Create the agent with weather tool
 
