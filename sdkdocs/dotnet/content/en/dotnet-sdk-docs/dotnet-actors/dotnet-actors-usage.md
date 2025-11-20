@@ -44,9 +44,9 @@ internal class MyActor : Actor, IMyActor, IRemindable
 }
 ```
 
-An actor type should have a single `public` constructor. The actor infrastructure uses the [`ActivatorUtilities`](https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#constructor-injection-behavior) pattern for constructing actor instances.
+An actor type should have a single `public` constructor. The actor infrastructure uses the [`ActivatorUtilities`](https://docs.microsoft.com/dotnet/core/extensions/dependency-injection#constructor-injection-behavior) pattern for constructing actor instances.
 
-You can register types with dependency injection in `Startup.cs` to make them available. Read more about [the different ways of registering your types](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?#service-registration-methods).
+You can register types with dependency injection in `Startup.cs` to make them available. Read more about [the different ways of registering your types](https://docs.microsoft.com/aspnet/core/fundamentals/dependency-injection?#service-registration-methods).
 
 ```csharp
 // In Startup.cs
@@ -74,7 +74,7 @@ internal class MyActor : Actor, IMyActor, IRemindable
 }
 ```
 
-When using this pattern, avoid creating many instances of **transient** services which implement `IDisposable`. Since the scope associated with an actor could be considered valid for a long time, you can accumulate many services in memory. See the [dependency injection guidelines](https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines) for more information.
+When using this pattern, avoid creating many instances of **transient** services which implement `IDisposable`. Since the scope associated with an actor could be considered valid for a long time, you can accumulate many services in memory. See the [dependency injection guidelines](https://docs.microsoft.com/dotnet/core/extensions/dependency-injection-guidelines) for more information.
 
 ### IDisposable and actors
 
@@ -82,7 +82,7 @@ Actors can implement `IDisposable` or `IAsyncDisposable`. It's recommended that 
 
 ### Logging
 
-Inside an actor class, you have access to an `ILogger` instance through a property on the base `Actor` class. This instance is connected to the ASP.NET Core logging system and should be used for all logging inside an actor. Read more about [logging](https://docs.microsoft.com/en-us/dotnet/core/extensions/logging?tabs=command-line). You can configure a variety of different logging formats and output sinks.
+Inside an actor class, you have access to an `ILogger` instance through a property on the base `Actor` class. This instance is connected to the ASP.NET Core logging system and should be used for all logging inside an actor. Read more about [logging](https://docs.microsoft.com/dotnet/core/extensions/logging?tabs=command-line). You can configure a variety of different logging formats and output sinks.
 
 Use _structured logging_ with _named placeholders_ like the example below:
 
@@ -178,7 +178,7 @@ public void ConfigureServices(IServiceCollection services)
 
 ### Actors and routing
 
-The ASP.NET Core hosting support for actors uses the [endpoint routing](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing) system. The .NET SDK provides no support hosting actors with the legacy routing system from early ASP.NET Core releases.
+The ASP.NET Core hosting support for actors uses the [endpoint routing](https://docs.microsoft.com/aspnet/core/fundamentals/routing) system. The .NET SDK provides no support hosting actors with the legacy routing system from early ASP.NET Core releases.
 
 Since actors uses endpoint routing, the actors HTTP handler is part of the middleware pipeline. The following is a minimal example of a `Configure` method setting up the middleware pipeline with actors.
 

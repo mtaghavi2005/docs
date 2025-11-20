@@ -20,7 +20,7 @@ There are a few layers to this problem with different solutions:
 
 **This is important. Future steps will depend on your ability to see logging output. ASP.NET Core logs almost nothing with the default log settings, so you will need to change it.**
 
-Adjust the logging verbosity to include `Information` logging for ASP.NET Core as described [here](https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-5.0#debug-diagnostics). Set the `Microsoft` key to `Information`.
+Adjust the logging verbosity to include `Information` logging for ASP.NET Core as described [here](https://docs.microsoft.com/aspnet/core/mvc/controllers/routing?view=aspnetcore-5.0#debug-diagnostics). Set the `Microsoft` key to `Information`.
 
 ## Step 2: Verify you can receive traffic from Dapr
 

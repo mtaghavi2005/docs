@@ -39,7 +39,7 @@ may change from one release to the next, so please be aware of this possibility 
 The `Dapr.AI.Microsoft.Extensions` package implements the `Microsoft.Extensions.AI` abstractions, providing a unified API for
 AI services in .NET applications. `Microsoft.Extensions.AI` is designed to offer a consistent programming model across
 different AI providers and scenarios. For detailed information about `Microsoft.Extensions.AI`, refer to the 
-[official documentation](https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai).
+[official documentation](https://learn.microsoft.com/dotnet/ai/microsoft-extensions-ai).
 
 {{% alert title="Limited Support" color="warning" %}}
 
@@ -138,5 +138,5 @@ building block configuration. The `DaprChatClient` will respect these settings w
 ## Related Links
 
 - [Dapr Conversation Building Block]({{ ref conversation-overview.md }})
-- [Microsoft.Extensions.AI Documentation](https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai)
+- [Microsoft.Extensions.AI Documentation](https://learn.microsoft.com/dotnet/ai/microsoft-extensions-ai)
 - [Dapr .NET Conversation SDK]({{% ref dotnet-ai-conversation-howto.md %}})

@@ -57,7 +57,7 @@ Use of `IServiceCollection.AddScoped()` is not recommended. Such instances' life
 
 ## Logging
 
-.NET Dapr pluggable components can use the [standard .NET logging mechanisms](https://learn.microsoft.com/en-us/dotnet/core/extensions/logging). The `DaprPluggableComponentsApplication` exposes an `ILoggingBuilder`, through which it can be configured.
+.NET Dapr pluggable components can use the [standard .NET logging mechanisms](https://learn.microsoft.com/dotnet/core/extensions/logging). The `DaprPluggableComponentsApplication` exposes an `ILoggingBuilder`, through which it can be configured.
 
 {{% alert title="Note" color="primary" %}}
 Like with ASP.NET, logger services (for example, `ILogger<T>`) are pre-registered.
@@ -93,7 +93,7 @@ class MyStateStore : IStateStore
 
 ## Configuration Values
 
-Since .NET pluggable components are built on ASP.NET, they can use its [standard configuration mechanisms](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration) and default to the same set of [pre-registered providers](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0#default-application-configuration-sources). The `DaprPluggableComponentsApplication` exposes an `IConfigurationManager` through which it can be configured.
+Since .NET pluggable components are built on ASP.NET, they can use its [standard configuration mechanisms](https://learn.microsoft.com/dotnet/core/extensions/configuration) and default to the same set of [pre-registered providers](https://learn.microsoft.com/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0#default-application-configuration-sources). The `DaprPluggableComponentsApplication` exposes an `IConfigurationManager` through which it can be configured.
 
 ```csharp
 var app = DaprPluggableComponentsApplication.Create();

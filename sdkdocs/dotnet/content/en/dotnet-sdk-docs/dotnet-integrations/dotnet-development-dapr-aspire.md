@@ -8,7 +8,7 @@ description: Learn about local development with .NET Aspire
 
 # .NET Aspire
 
-[.NET Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview) is a development tool 
+[.NET Aspire](https://learn.microsoft.com/dotnet/aspire/get-started/aspire-overview) is a development tool 
 designed to make it easier to include external software into .NET applications by providing a framework that allows 
 third-party services to be readily integrated, observed and provisioned alongside your own software.
 
@@ -21,7 +21,7 @@ integrations as well, including Dapr.
 
 While Aspire also assists with deployment of your application to various cloud hosts like Microsoft Azure and 
 Amazon AWS, deployment is currently outside the scope of this guide. More information can be found in Aspire's 
-documentation [here](https://learn.microsoft.com/en-us/dotnet/aspire/deployment/overview).
+documentation [here](https://learn.microsoft.com/dotnet/aspire/deployment/overview).
 
 An end-to-end demonstration featuring the following and demonstrating service invocation between multiple Dapr-enabled
 services can be found [here](https://github.com/dapr/dotnet-sdk/tree/master/examples/Hosting/Aspire/ServiceInvocationDemo).

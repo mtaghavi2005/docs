@@ -17,7 +17,7 @@ Dapr offers NuGet packages to help with the development of .NET pluggable compon
 
 ## Prerequisites
 
-- [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet) or later
+- [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet) or later
 - [Dapr 1.9 CLI]({{% ref install-dapr-cli.md %}}) or later
 - Initialized [Dapr environment]({{% ref install-dapr-selfhost.md %}})
 - Linux, Mac, or Windows (with WSL)
@@ -121,7 +121,7 @@ There are several ways to create a container for your component for eventual dep
 
 ### Use .NET SDK
 
-The [.NET 7 and later SDKs](https://dotnet.microsoft.com/en-us/download/dotnet) enable you to create a .NET-based container for your application *without* a `Dockerfile`, even for those targeting earlier versions of the .NET SDK. This is probably the simplest way of generating a container for your component today.
+The [.NET 7 and later SDKs](https://dotnet.microsoft.com/download/dotnet) enable you to create a .NET-based container for your application *without* a `Dockerfile`, even for those targeting earlier versions of the .NET SDK. This is probably the simplest way of generating a container for your component today.
 
 {{% alert title="Note" color="primary" %}}
 Currently, the .NET 7 SDK requires Docker Desktop on the local machine, a special NuGet package, and Docker Desktop on the local machine to build containers. Future versions of .NET SDK plan to eliminate those requirements.
@@ -145,7 +145,7 @@ dotnet publish --os linux --arch x64 /t:PublishContainer -c Release
 Ensure the architecture argument `--arch x64` matches that of the component's ultimate deployment target. By default, the architecture of the generated container matches that of the local machine. For example, if the local machine is ARM64-based (for example, a M1 or M2 Mac) and the argument is omitted, an ARM64 container will be generated which may not be compatible with deployment targets expecting an AMD64 container.
 {{% /alert %}}
 
-For more configuration options, such as controlling the container name, tag, and base image, see the [.NET publish as container guide](https://learn.microsoft.com/en-us/dotnet/core/docker/publish-as-container).
+For more configuration options, such as controlling the container name, tag, and base image, see the [.NET publish as container guide](https://learn.microsoft.com/dotnet/core/docker/publish-as-container).
 
 ### Use a Dockerfile
 

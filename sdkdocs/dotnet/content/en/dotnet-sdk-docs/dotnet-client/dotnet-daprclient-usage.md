@@ -135,9 +135,9 @@ When an operation is cancelled, it will throw an `OperationCancelledException`.
 
 Many methods on `DaprClient` perform JSON serialization using the `System.Text.Json` serializer. Methods that accept an application data type as an argument will JSON serialize it, unless the documentation clearly states otherwise.
 
-It is worth reading the [System.Text.Json documentation](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-overview) if you have advanced requirements. The Dapr .NET SDK provides no unique serialization behavior or customizations - it relies on the underlying serializer to convert data to and from the application's .NET types.
+It is worth reading the [System.Text.Json documentation](https://docs.microsoft.com/dotnet/standard/serialization/system-text-json-overview) if you have advanced requirements. The Dapr .NET SDK provides no unique serialization behavior or customizations - it relies on the underlying serializer to convert data to and from the application's .NET types.
 
-`DaprClient` is configured to use a serializer options object configured from [JsonSerializerDefaults.Web](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializerdefaults?view=net-5.0). This means that `DaprClient` will use `camelCase` for property names, allow reading quoted numbers (`"10.99"`), and will bind properties case-insensitively. These are the same settings used with ASP.NET Core and the `System.Text.Json.Http` APIs, and are designed to follow interoperable web conventions.
+`DaprClient` is configured to use a serializer options object configured from [JsonSerializerDefaults.Web](https://docs.microsoft.com/dotnet/api/system.text.json.jsonserializerdefaults?view=net-5.0). This means that `DaprClient` will use `camelCase` for property names, allow reading quoted numbers (`"10.99"`), and will bind properties case-insensitively. These are the same settings used with ASP.NET Core and the `System.Text.Json.Http` APIs, and are designed to follow interoperable web conventions.
 
 `System.Text.Json` as of .NET 5.0 does not have good support for all of F# language features built-in. If you are using F# you may want to use one of the converter packages that add support for F#'s features such as [FSharp.SystemTextJson](https://github.com/Tarmil/FSharp.SystemTextJson).
 
@@ -150,7 +150,7 @@ Your experience using JSON serialization and `DaprClient` will be smooth if you 
 - Do not put complex or expensive logic in constructors or property accessors
 - Use .NET types that map cleanly to JSON types (numeric types, strings, `DateTime`)
 - Create your own classes for top-level messages, events, or state values so you can add properties in the future
-- Design types with `get`/`set` properties OR use the [supported pattern](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-immutability?pivots=dotnet-5-0) for immutable types with JSON
+- Design types with `get`/`set` properties OR use the [supported pattern](https://docs.microsoft.com/dotnet/standard/serialization/system-text-json-immutability?pivots=dotnet-5-0) for immutable types with JSON
 
 ### Polymorphism and serialization
 

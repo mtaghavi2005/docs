@@ -49,7 +49,7 @@ should jump directly to the part of your code responsible for the violating the 
 ### Suppress specific analyzers
 If you wish to keep an analyzer from firing against some particular piece of your project, their outputs can be
 individually targeted for suppression through a number of ways. Read more about suppressing analyzers in projects
-or files in the associated [.NET documentation](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/suppress-warnings#use-the-suppressmessageattribute).
+or files in the associated [.NET documentation](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/suppress-warnings#use-the-suppressmessageattribute).
 
 ### Disable all analyzers
 If you wish to disable all analyzers in your project without removing any packages providing them, set

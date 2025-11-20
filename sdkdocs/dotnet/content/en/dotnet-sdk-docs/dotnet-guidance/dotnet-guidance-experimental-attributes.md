@@ -108,7 +108,7 @@ For suppressing warnings across multiple projects in a directory, add a `Directo
 
 This file should be placed in the root directory of your test projects. You can learn more about using 
 `Directory.Build.props` files in the 
-[MSBuild documentation](https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory).
+[MSBuild documentation](https://learn.microsoft.com/visualstudio/msbuild/customize-by-directory).
 
 ### Lifecycle of Experimental APIs
 
@@ -135,4 +135,4 @@ Conversely, the `[Obsolete]` attribute will now be reserved exclusively for APIs
 ### Additional Resources
 
 - [Dapr Component Certification Lifecycle](https://docs.dapr.io/operations/components/certification-lifecycle/)
-- [C# Experimental Attribute Documentation](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-12.0/experimental-attribute)
+- [C# Experimental Attribute Documentation](https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-12.0/experimental-attribute)

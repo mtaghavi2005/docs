@@ -16,9 +16,9 @@ In this section, you will learn how to configure your C# types so they are prope
 
 When using the weakly-typed Dapr Actor client to invoke methods from your various actors, it's not necessary to independently serialize or deserialize the method payloads as this will happen transparently on your behalf by the SDK.
 
-The client will use the latest version of System.Text.Json available for the version of .NET you're building against and serialization is subject to all the inherent capabilities provided in the [associated .NET documentation](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/overview).
+The client will use the latest version of System.Text.Json available for the version of .NET you're building against and serialization is subject to all the inherent capabilities provided in the [associated .NET documentation](https://learn.microsoft.com/dotnet/standard/serialization/system-text-json/overview).
 
-The serializer will be configured to use the `JsonSerializerOptions.Web` [default options](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/configure-options?pivots=dotnet-8-0#web-defaults-for-jsonserializeroptions) unless overridden with a custom options configuration which means the following are applied:
+The serializer will be configured to use the `JsonSerializerOptions.Web` [default options](https://learn.microsoft.com/dotnet/standard/serialization/system-text-json/configure-options?pivots=dotnet-8-0#web-defaults-for-jsonserializeroptions) unless overridden with a custom options configuration which means the following are applied:
 - Deserialization of the property name is performed in a case-insensitive manner
 - Serialization of the property name is performed using [camel casing](https://en.wikipedia.org/wiki/Camel_case) unless the property is overridden with a `[JsonPropertyName]` attribute
 - Deserialization will read numeric values from number and/or string values 
@@ -287,7 +287,7 @@ clients, ensuring that the correct derived types are instantiated and used.
 ## Strongly-typed Dapr Actor client
 In this section, you will learn how to configure your classes and records so they are properly serialized and deserialized at runtime when using a strongly-typed actor client. These clients are implemented using .NET interfaces and are <u>not</u> compatible with Dapr Actors written using other languages.
 
-This actor client serializes data using an engine called the [Data Contract Serializer](https://learn.microsoft.com/en-us/dotnet/framework/wcf/feature-details/serializable-types) which converts your C# types to and from XML documents. This serialization framework is not specific to Dapr and is separately maintained by the .NET team within the [.NET GitHub repository](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.DataContractSerialization/src/System/Runtime/Serialization/DataContractSerializer.cs).
+This actor client serializes data using an engine called the [Data Contract Serializer](https://learn.microsoft.com/dotnet/framework/wcf/feature-details/serializable-types) which converts your C# types to and from XML documents. This serialization framework is not specific to Dapr and is separately maintained by the .NET team within the [.NET GitHub repository](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.DataContractSerialization/src/System/Runtime/Serialization/DataContractSerializer.cs).
 
 When sending or receiving primitives (like strings or ints), this serialization happens transparently and there's no requisite preparation needed on your part. However, when working with complex types such as those you create, there are some important rules to take into consideration so this process works smoothly.
 
@@ -302,14 +302,14 @@ There are several important considerations to keep in mind when using the Data C
 - If a type is marked with the DataContractAttribute attribute, all members you wish to serialize and deserialize must be decorated with the DataMemberAttribute attribute as well or they'll be set to their default values
 
 ### How does deserialization work?
-The approach used for deserialization depends on whether or not the type is decorated with the [DataContractAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datacontractattribute) attribute. If this attribute isn't present, an instance of the type is created using the parameterless constructor. Each of the properties and fields are then mapped into the type using their respective setters and the instance is returned to the caller. 
+The approach used for deserialization depends on whether or not the type is decorated with the [DataContractAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.datacontractattribute) attribute. If this attribute isn't present, an instance of the type is created using the parameterless constructor. Each of the properties and fields are then mapped into the type using their respective setters and the instance is returned to the caller. 
 
 If the type _is_ marked with `[DataContract]`, the serializer instead uses reflection to read the metadata of the type and determine which properties or fields should be included based on whether or not they're marked with the DataMemberAttribute attribute as it's performed on an opt-in basis. It then allocates an uninitialized object in memory (avoiding the use of any constructors, parameterless or not) and then sets the value directly on each mapped property or field, even if private or uses init-only setters. Serialization callbacks are invoked as applicable throughout this process and then the object is returned to the caller. 
 
 Use of the serialization attributes is highly recommended as they grant more flexibility to override names and namespaces and generally use more of the modern C# functionality. While the default serializer can be relied on for primitive types, it's not recommended for any of your own types, whether they be classes, structs or records.  It's recommended that if you decorate a type with the DataContractAttribute attribute, you also explicitly decorate each of the members you want to serialize or deserialize with the DataMemberAttribute attribute as well.
 
 #### .NET Classes
-Classes are fully supported in the Data Contract Serializer provided that that other rules detailed on this page and the [Data Contract Serializer](https://learn.microsoft.com/en-us/dotnet/framework/wcf/feature-details/serializable-types) documentation are also followed.
+Classes are fully supported in the Data Contract Serializer provided that that other rules detailed on this page and the [Data Contract Serializer](https://learn.microsoft.com/dotnet/framework/wcf/feature-details/serializable-types) documentation are also followed.
 
 The most important thing to remember here is that you must either have a public parameterless constructor or you must decorate it with the appropriate attributes. Let's review some examples to really clarify what will and won't work.
 
@@ -375,7 +375,7 @@ public class Doodad
 }
 ```
 
-But what if we don't want to add this constructor? Perhaps you don't want your developers to accidentally create an instance of this Doodad using an unintended constructor. That's where the more flexible attributes are useful. If you decorate your type with a [DataContractAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datacontractattribute) attribute, you can drop your parameterless constructor and it will work once again.
+But what if we don't want to add this constructor? Perhaps you don't want your developers to accidentally create an instance of this Doodad using an unintended constructor. That's where the more flexible attributes are useful. If you decorate your type with a [DataContractAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.datacontractattribute) attribute, you can drop your parameterless constructor and it will work once again.
 
 ```csharp
 [DataContract]
@@ -394,13 +394,13 @@ public class Doodad
 }
 ```
 
-In the above example, we don't need to also use the [DataMemberAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datamemberattribute) attributes because again, we're using [built-in primitives](###supported-primitive-types) that the serializer supports. But, we do get more flexibility if we use the attributes. From the DataContractAttribute attribute, we can specify our own XML namespace with the Namespace argument and, via the Name argument, change the name of the type as used when serialized into the XML document. 
+In the above example, we don't need to also use the [DataMemberAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.datamemberattribute) attributes because again, we're using [built-in primitives](###supported-primitive-types) that the serializer supports. But, we do get more flexibility if we use the attributes. From the DataContractAttribute attribute, we can specify our own XML namespace with the Namespace argument and, via the Name argument, change the name of the type as used when serialized into the XML document. 
 
 It's a recommended practice to append the DataContractAttribute attribute to the type and the DataMemberAttribute attributes to all the members you want to serialize anyway - if they're not necessary and you're not changing the default values, they'll just be ignored, but they give you a mechanism to opt into serializing members that wouldn't otherwise have been included such as those marked as private or that are themselves complex types or collections.
 
 Note that if you do opt into serializing your private members, their values will be serialized into plain text - they can very well be viewed, intercepted and potentially manipulated based on how you're handing the data once serialized, so it's an important consideration whether you want to mark these members or not in your use case.
 
-In the following example, we'll look at using the attributes to change the serialized names of some of the members as well as introduce the [IgnoreDataMemberAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.serialization.ignoredatamemberattribute) attribute. As the name indicates, this tells the serializer to skip this property even though it'd be otherwise eligible to serialize. Further, because I'm decorating the type with the DataContractAttribute attribute, it means that I can use init-only setters on the properties.
+In the following example, we'll look at using the attributes to change the serialized names of some of the members as well as introduce the [IgnoreDataMemberAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.ignoredatamemberattribute) attribute. As the name indicates, this tells the serializer to skip this property even though it'd be otherwise eligible to serialize. Further, because I'm decorating the type with the DataContractAttribute attribute, it means that I can use init-only setters on the properties.
 
 ```csharp
 [DataContract(Name="Doodad")]
@@ -519,34 +519,34 @@ public record Doodad(
 #### Supported Primitive Types
 There are several types built into .NET that are considered primitive and eligible for serialization without additional effort on the part of the developer:
 
-- [Byte](https://learn.microsoft.com/en-us/dotnet/api/system.byte)
-- [SByte](https://learn.microsoft.com/en-us/dotnet/api/system.sbyte)
-- [Int16](https://learn.microsoft.com/en-us/dotnet/api/system.int16)
-- [Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32)
-- [Int64](https://learn.microsoft.com/en-us/dotnet/api/system.int64)
-- [UInt16](https://learn.microsoft.com/en-us/dotnet/api/system.uint16)
-- [UInt32](https://learn.microsoft.com/en-us/dotnet/api/system.uint32)
-- [UInt64](https://learn.microsoft.com/en-us/dotnet/api/system.uint64)
-- [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
-- [Double](https://learn.microsoft.com/en-us/dotnet/api/system.double)
-- [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
-- [Char](https://learn.microsoft.com/en-us/dotnet/api/system.char)
-- [Decimal](https://learn.microsoft.com/en-us/dotnet/api/system.decimal)
-- [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object)
-- [String](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+- [Byte](https://learn.microsoft.com/dotnet/api/system.byte)
+- [SByte](https://learn.microsoft.com/dotnet/api/system.sbyte)
+- [Int16](https://learn.microsoft.com/dotnet/api/system.int16)
+- [Int32](https://learn.microsoft.com/dotnet/api/system.int32)
+- [Int64](https://learn.microsoft.com/dotnet/api/system.int64)
+- [UInt16](https://learn.microsoft.com/dotnet/api/system.uint16)
+- [UInt32](https://learn.microsoft.com/dotnet/api/system.uint32)
+- [UInt64](https://learn.microsoft.com/dotnet/api/system.uint64)
+- [Single](https://learn.microsoft.com/dotnet/api/system.single)
+- [Double](https://learn.microsoft.com/dotnet/api/system.double)
+- [Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)
+- [Char](https://learn.microsoft.com/dotnet/api/system.char)
+- [Decimal](https://learn.microsoft.com/dotnet/api/system.decimal)
+- [Object](https://learn.microsoft.com/dotnet/api/system.object)
+- [String](https://learn.microsoft.com/dotnet/api/system.string)
 
 There are additional types that aren't actually primitives but have similar built-in support:
 
-- [DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime)
-- [TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan)
-- [Guid](https://learn.microsoft.com/en-us/dotnet/api/system.guid)
-- [Uri](https://learn.microsoft.com/en-us/dotnet/api/system.uri)
-- [XmlQualifiedName](https://learn.microsoft.com/en-us/dotnet/api/system.xml.xmlqualifiedname)
+- [DateTime](https://learn.microsoft.com/dotnet/api/system.datetime)
+- [TimeSpan](https://learn.microsoft.com/dotnet/api/system.timespan)
+- [Guid](https://learn.microsoft.com/dotnet/api/system.guid)
+- [Uri](https://learn.microsoft.com/dotnet/api/system.uri)
+- [XmlQualifiedName](https://learn.microsoft.com/dotnet/api/system.xml.xmlqualifiedname)
 
-Again, if you want to pass these types around via your actor methods, no additional consideration is necessary as they'll be serialized and deserialized without issue. Further, types that are themselves marked with the (SerializeableAttribute)[https://learn.microsoft.com/en-us/dotnet/api/system.serializableattribute] attribute will be serialized.
+Again, if you want to pass these types around via your actor methods, no additional consideration is necessary as they'll be serialized and deserialized without issue. Further, types that are themselves marked with the (SerializeableAttribute)[https://learn.microsoft.com/dotnet/api/system.serializableattribute] attribute will be serialized.
 
 #### Enumeration Types
-Enumerations, including flag enumerations are serializable if appropriately marked. The enum members you wish to be serialized must be marked with the [EnumMemberAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.serialization.enummemberattribute) attribute in order to be serialized. Passing a custom value into the optional Value argument on this attribute will allow you to specify the value used for the member in the serialized document instead of having the serializer derive it from the name of the member.
+Enumerations, including flag enumerations are serializable if appropriately marked. The enum members you wish to be serialized must be marked with the [EnumMemberAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.enummemberattribute) attribute in order to be serialized. Passing a custom value into the optional Value argument on this attribute will allow you to specify the value used for the member in the serialized document instead of having the serializer derive it from the name of the member.
 
 The enum type does not require that the type be decorated with the `DataContractAttribute` attribute - only that the members you wish to serialize be decorated with the `EnumMemberAttribute` attributes.
 
@@ -562,18 +562,18 @@ public enum Colors
 ```
 
 #### Collection Types
-With regards to the data contact serializer, all collection types that implement the [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.ienumerable) interface including arays and generic collections are considered collections. Those types that implement [IDictionary](https://learn.microsoft.com/en-us/dotnet/api/system.collections.idictionary) or the generic [IDictionary<TKey, TValue>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.idictionary-2) are considered dictionary collections; all others are list collections.
+With regards to the data contact serializer, all collection types that implement the [IEnumerable](https://learn.microsoft.com/dotnet/api/system.collections.ienumerable) interface including arays and generic collections are considered collections. Those types that implement [IDictionary](https://learn.microsoft.com/dotnet/api/system.collections.idictionary) or the generic [IDictionary<TKey, TValue>](https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2) are considered dictionary collections; all others are list collections.
 
 Not unlike other complex types, collection types must have a parameterless constructor available. Further, they must also have a method called Add so they can be properly serialized and deserialized. The types used by these collection types must themselves be marked with the `DataContractAttribute` attribute or otherwise be serializable as described throughout this document.
 
 #### Data Contract Versioning
-As the data contract serializer is only used in Dapr with respect to serializing the values in the .NET SDK to and from the Dapr actor instances via the proxy methods, there's little need to consider versioning of data contracts as the data isn't being persisted between application versions using the same serializer. For those interested in learning more about data contract versioning visit [here](https://learn.microsoft.com/en-us/dotnet/framework/wcf/feature-details/data-contract-versioning).
+As the data contract serializer is only used in Dapr with respect to serializing the values in the .NET SDK to and from the Dapr actor instances via the proxy methods, there's little need to consider versioning of data contracts as the data isn't being persisted between application versions using the same serializer. For those interested in learning more about data contract versioning visit [here](https://learn.microsoft.com/dotnet/framework/wcf/feature-details/data-contract-versioning).
 
 #### Known Types
-Nesting your own complex types is easily accommodated by marking each of the types with the [DataContractAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datacontractattribute) attribute. This informs the serializer as to how deserialization should be performed. 
-But what if you're working with polymorphic types and one of your members is a base class or interface with derived classes or other implementations? Here, you'll use the [KnownTypeAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.serialization.knowntypeattribute) attribute to give a hint to the serializer about how to proceed.
+Nesting your own complex types is easily accommodated by marking each of the types with the [DataContractAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.datacontractattribute) attribute. This informs the serializer as to how deserialization should be performed. 
+But what if you're working with polymorphic types and one of your members is a base class or interface with derived classes or other implementations? Here, you'll use the [KnownTypeAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.knowntypeattribute) attribute to give a hint to the serializer about how to proceed.
 
-When you apply the [KnownTypeAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.serialization.knowntypeattribute) attribute to a type, you are informing the data contract serializer about what subtypes it might encounter allowing it to properly handle the serialization and deserialization of these types, even when the actual type at runtime is different from the declared type.
+When you apply the [KnownTypeAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.serialization.knowntypeattribute) attribute to a type, you are informing the data contract serializer about what subtypes it might encounter allowing it to properly handle the serialization and deserialization of these types, even when the actual type at runtime is different from the declared type.
 
 ```chsarp
 [DataContract]
@@ -592,4 +592,4 @@ public class DerivedClass : BaseClass
 
 In this example, the `BaseClass` is marked with `[KnownType(typeof(DerivedClass))]` which tells the data contract serializer that `DerivedClass` is a possible implementation of `BaseClass` that it may need to serialize or deserialize. Without this attribute, the serialize would not be aware of the `DerivedClass` when it encounters an instance of `BaseClass` that is actually of type `DerivedClass` and this could lead to a serialization exception because the serializer would not know how to handle the derived type. By specifying all possible derived types as known types, you ensure that the serializer can process the type and its members correctly.
 
-For more information and examples about using `[KnownType]`, please refer to the [official documentation](https://learn.microsoft.com/en-us/dotnet/framework/wcf/feature-details/data-contract-known-types).
+For more information and examples about using `[KnownType]`, please refer to the [official documentation](https://learn.microsoft.com/dotnet/framework/wcf/feature-details/data-contract-known-types).
