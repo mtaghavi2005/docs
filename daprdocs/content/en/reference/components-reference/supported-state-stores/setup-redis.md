@@ -514,7 +514,7 @@ When using Redis Sentinel for high availability, set `redisType` to `"node"`, en
       - name: failover
         value: "true"
       - name: sentinelMasterName
-        value: "mymaster"Expand commentComment on line R137Code has comments. Press enter to view.
+        value: "mymaster"
     ```
 
 ## Related links
