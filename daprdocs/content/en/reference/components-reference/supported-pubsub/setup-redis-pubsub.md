@@ -40,7 +40,7 @@ The above example uses secrets as plain strings. It is recommended to use a secr
 
 | Field              | Required | Details | Example |
 |--------------------|:--------:|---------|---------|
-| redisHost          | Y        | Connection-string for the redis host. If `"redisType"` is `"cluster"`, it can be multiple hosts separated by commas or just a single host. When using Redis Sentinel multiple sentinel addresses can also be provided as comma-separated values. | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
+| redisHost | Y | Connection-string for the redis host. If `"redisType"` is `"cluster"`, it can be multiple hosts separated by commas. When using Redis Sentinel (`"failover"` is `"true"`), multiple sentinel addresses can also be provided as comma-separated values. | `localhost:6379`, `redis-master.default.svc.cluster.local:6379`
 | redisPassword      | N        | Password for Redis host. No Default. Can be `secretKeyRef` to use a secret reference  | `""`, `"KeFg23!"`
 | redisUsername      | N        | Username for Redis host. Defaults to empty. Make sure your redis server version is 6 or above, and have created acl rule correctly. | `""`, `"default"`
 | consumerID         | N        | The consumer group ID.  | Can be set to string value (such as `"channel1"` in the example above) or string format value (such as `"{podName}"`, etc.). [See all of template tags you can use in your component metadata.]({{% ref "component-schema.md#templated-metadata-values" %}})
@@ -103,7 +103,7 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
     ```
 ## Redis Sentinel configuration
 
-When using Redis Sentinel for high availability, enable failover mode and provide the sentinel master name. Multiple sentinel addresses can be specified as a comma-separated list in the `redisHost` field for redundancy.
+When using Redis Sentinel for high availability, set `redisType` to `"node"`, enable failover mode with `failover: "true"`, and provide the sentinel master name. Multiple sentinel addresses can be specified as a comma-separated list in the `redisHost` field for redundancy.
 
     ```yaml
     apiVersion: dapr.io/v1alpha1
@@ -116,6 +116,8 @@ When using Redis Sentinel for high availability, enable failover mode and provid
       metadata:
       - name: redisHost
         value: "sentinel1:26379,sentinel2:26379,sentinel3:26379"
+      - name: redisType
+        value: "node"
       - name: failover
         value: "true"
       - name: sentinelMasterName
