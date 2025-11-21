@@ -18,7 +18,6 @@ This example uses the default configuration from `dapr init` in [self-hosted mod
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm),
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
-<!-- END_IGNORE -->
 - Verify you're using the latest proto bindings
 
 ## Set up the environment
