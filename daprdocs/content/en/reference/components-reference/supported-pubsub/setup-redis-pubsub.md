@@ -101,6 +101,19 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
         - name: redisHost
           value: redis-master:6379
     ```
+
+4. Next, we'll get our Redis password, which is slightly different depending on the OS we're using:
+    - **Windows**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64`, which will create a file with your encoded password. Next, run `certutil -decode encoded.b64 password.txt`, which will put your redis password in a text file called `password.txt`. Copy the password and delete the two files.
+
+    - **Linux/MacOS**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode` and copy the outputted password.
+
+    Add this password as the `redisPassword` value in your redis.yaml file. For example:
+
+    ```yaml
+        - name: redisPassword
+          value: "lhDOkwTlp0"
+    ```
+
 ## Redis Sentinel configuration
 
 When using Redis Sentinel for high availability, set `redisType` to `"node"`, enable failover mode with `failover: "true"`, and provide the sentinel master name. Multiple sentinel addresses can be specified as a comma-separated list in the `redisHost` field for redundancy.
@@ -124,17 +137,6 @@ When using Redis Sentinel for high availability, set `redisType` to `"node"`, en
         value: "mymaster"
     ```
 
-4. Next, we'll get our Redis password, which is slightly different depending on the OS we're using:
-    - **Windows**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" > encoded.b64`, which will create a file with your encoded password. Next, run `certutil -decode encoded.b64 password.txt`, which will put your redis password in a text file called `password.txt`. Copy the password and delete the two files.
-
-    - **Linux/MacOS**: Run `kubectl get secret --namespace default redis -o jsonpath="{.data.redis-password}" | base64 --decode` and copy the outputted password.
-
-    Add this password as the `redisPassword` value in your redis.yaml file. For example:
-
-    ```yaml
-        - name: redisPassword
-          value: "lhDOkwTlp0"
-    ```
 {{% /tab %}}
 
 {{% tab "AWS" %}}
