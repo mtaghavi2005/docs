@@ -114,29 +114,6 @@ You can use [Helm](https://helm.sh/) to quickly create a Redis instance in our K
           value: "lhDOkwTlp0"
     ```
 
-## Redis Sentinel configuration
-
-When using Redis Sentinel for high availability, set `redisType` to `"node"`, enable failover mode with `failover: "true"`, and provide the sentinel master name. Multiple sentinel addresses can be specified as a comma-separated list in the `redisHost` field for redundancy.
-
-    ```yaml
-    apiVersion: dapr.io/v1alpha1
-    kind: Component
-    metadata:
-      name: redis-pubsub
-    spec:
-      type: pubsub.redis
-      version: v1
-      metadata:
-      - name: redisHost
-        value: "sentinel1:26379,sentinel2:26379,sentinel3:26379"
-      - name: redisType
-        value: "node"
-      - name: failover
-        value: "true"
-      - name: sentinelMasterName
-        value: "mymaster"
-    ```
-
 {{% /tab %}}
 
 {{% tab "AWS" %}}
@@ -182,6 +159,29 @@ When using Redis Sentinel for high availability, set `redisType` to `"node"`, en
 {{% alert title="Note" color="primary" %}}
 The Dapr CLI automatically deploys a local redis instance in self hosted mode as part of the `dapr init` command.
 {{% /alert %}}
+
+## Redis Sentinel configuration
+
+When using Redis Sentinel for high availability, set `redisType` to `"node"`, enable failover mode with `failover: "true"`, and provide the sentinel master name. Multiple sentinel addresses can be specified as a comma-separated list in the `redisHost` field for redundancy.
+
+    ```yaml
+    apiVersion: dapr.io/v1alpha1
+    kind: Component
+    metadata:
+      name: redis-pubsub
+    spec:
+      type: pubsub.redis
+      version: v1
+      metadata:
+      - name: redisHost
+        value: "sentinel1:26379,sentinel2:26379,sentinel3:26379"
+      - name: redisType
+        value: "node"
+      - name: failover
+        value: "true"
+      - name: sentinelMasterName
+        value: "mymaster"
+    ```
 
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})
