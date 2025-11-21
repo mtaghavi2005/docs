@@ -275,10 +275,10 @@ module:
       target: assets
     - source: daprdocs/archetypes
       target: archetypes
-    - source: sdkdocs/python/daprdocs/content/en/python-sdk-docs
+    - source: sdkdocs/python/content/en/python-sdk-docs
       target: content/developing-applications/sdks/python
       lang: en
-    - source: sdkdocs/python/daprdocs/content/en/python-sdk-contributing
+    - source: sdkdocs/python/content/en/python-sdk-contributing
       target: content/contributing/sdk-contrib/
       lang: en
     - source: sdkdocs/php/daprdocs/content/en/php-sdk-docs
