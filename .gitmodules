@@ -1,9 +1,6 @@
 [submodule "sdkdocs/python"]
 	path = sdkdocs/python
 	url = https://github.com/dapr/python-sdk.git
-[submodule "sdkdocs/php"]
-	path = sdkdocs/php
-	url = https://github.com/dapr/php-sdk.git
 [submodule "translations/docs-zh"]
 	path = translations/docs-zh
 	url = https://github.com/dapr/docs-zh.git
