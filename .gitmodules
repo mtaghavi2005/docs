@@ -1,6 +1,3 @@
-[submodule "sdkdocs/python"]
-	path = sdkdocs/python
-	url = https://github.com/dapr/python-sdk.git
 [submodule "sdkdocs/php"]
 	path = sdkdocs/php
 	url = https://github.com/dapr/php-sdk.git
@@ -11,9 +8,6 @@
 [submodule "sdkdocs/go"]
 	path = sdkdocs/go
 	url = https://github.com/dapr/go-sdk.git
-[submodule "sdkdocs/java"]
-	path = sdkdocs/java
-	url = https://github.com/dapr/java-sdk.git
 [submodule "sdkdocs/pluggable-components/go"]
 	path = sdkdocs/pluggable-components/go
 	url = https://github.com/dapr-sandbox/components-go-sdk
