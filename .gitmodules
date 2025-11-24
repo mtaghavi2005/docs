@@ -8,9 +8,6 @@
 [submodule "sdkdocs/go"]
 	path = sdkdocs/go
 	url = https://github.com/dapr/go-sdk.git
-[submodule "sdkdocs/js"]
-	path = sdkdocs/js
-	url = https://github.com/dapr/js-sdk.git 
 [submodule "sdkdocs/pluggable-components/go"]
 	path = sdkdocs/pluggable-components/go
 	url = https://github.com/dapr-sandbox/components-go-sdk
