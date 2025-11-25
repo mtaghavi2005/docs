@@ -281,7 +281,7 @@ module:
     - source: sdkdocs/python/content/en/python-sdk-contributing
       target: content/contributing/sdk-contrib/
       lang: en
-    - source: sdkdocs/php/daprdocs/content/en/php-sdk-docs
+    - source: sdkdocs/php/content/en/php-sdk-docs
       target: content/developing-applications/sdks/php
       lang: en
     - source: sdkdocs/dotnet/content/en/dotnet-sdk-docs

@@ -1,6 +1,3 @@
-[submodule "sdkdocs/php"]
-	path = sdkdocs/php
-	url = https://github.com/dapr/php-sdk.git
 [submodule "translations/docs-zh"]
 	path = translations/docs-zh
 	url = https://github.com/dapr/docs-zh.git
