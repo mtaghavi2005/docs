@@ -3,7 +3,7 @@ type: docs
 title: "DaprWorkflowClient usage"
 linkTitle: "DaprWorkflowClient usage"
 weight: 100000
-description: Essential tips and advice for using DaprWorkflowClient
+description: Essential tips and advice for using `DaprWorkflowClient`
 ---
 
 ## Lifetime management
@@ -76,7 +76,19 @@ var app = builder.Build();
 await app.RunAsync();
 ```
 
+### Create a `DaprWorkflowClient` instance
+
+To create a `DaprWorkflowClient` instance in your `Program.cs`, retrieve it from the `ServiceProvider`:
+
+```csharp
+await using var scope = host.Services.CreateAsyncScope();
+var daprWorkflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
+```
+
+Now, you can use this client to perform workflow management operations such as starting, pausing, resuming, and terminating a workflow instance.
+
 ## Injecting Services into Workflow Activities
+
 Workflow activities support the same dependency injection that developers have come to expect of modern C# applications. Assuming a proper
 registration at startup, any such type can be injected into the constructor of the workflow activity and available to utilize during
 the execution of the workflow. This makes it simple to add logging via an injected `ILogger` or access to other Dapr 
@@ -104,6 +116,7 @@ internal sealed class SquareNumberActivity : WorkflowActivity<int, int>
 ```
 
 ### Using ILogger in Workflow
+
 Because workflows must be deterministic, it is not possible to inject arbitrary services into them. For example, 
 if you were able to inject a standard `ILogger` into a workflow and it needed to be replayed because of an error,
 subsequent replay from the event source log would result in the log recording additional operations that didn't actually
@@ -132,6 +145,3 @@ public class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
     }
 }
 ```
-
-
- 
