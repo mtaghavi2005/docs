@@ -28,6 +28,7 @@ as well as its own dependencies.
 {{% /alert %}} 
 
 ### Singleton Registration
+
 By default, the `AddDaprWorkflow` method will register the `DaprWorkflowClient` and associated services using a singleton lifetime. This means
 that the services will be instantiated only a single time.
 
@@ -85,7 +86,7 @@ await using var scope = host.Services.CreateAsyncScope();
 var daprWorkflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
 ```
 
-Now, you can use this client to perform workflow management operations such as starting, pausing, resuming, and terminating a workflow instance.
+Now, you can use this client to perform workflow management operations such as starting, pausing, resuming, and terminating a workflow instance. See [Workflow management operations with `DaprWorkflowClient`]({{% ref dotnet-workflow-management-methods.md %}}) for more information on these operations.
 
 ## Injecting Services into Workflow Activities
 
