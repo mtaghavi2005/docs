@@ -75,7 +75,7 @@ Continue with the [Run local server](#run-local-server) steps.
 ```sh
 git submodule update --init --recursive
 ```
-`
+
 1. Install the npm packages:
 
 ```sh
