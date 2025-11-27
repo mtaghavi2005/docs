@@ -2,7 +2,7 @@
 type: docs
 title: "How to: Author and manage Dapr Workflow in the .NET SDK"
 linkTitle: "How to: Author & manage workflows"
-weight: 100000
+weight: 3000
 description: Learn how to author and manage Dapr Workflow using the .NET SDK
 ---
 

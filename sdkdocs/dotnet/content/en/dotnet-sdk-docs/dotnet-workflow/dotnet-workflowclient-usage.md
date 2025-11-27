@@ -1,9 +1,9 @@
 ---
 type: docs
-title: "DaprWorkflowClient usage"
-linkTitle: "DaprWorkflowClient usage"
-weight: 100000
-description: Essential tips and advice for using `DaprWorkflowClient`
+title: "DaprWorkflowClient lifetime management and registration"
+linkTitle: "DaprWorkflowClient registration"
+weight: 1000
+description: Learn how to configure the `DaprWorkflowClient` lifetime management and dependency injection
 ---
 
 ## Lifetime management
@@ -145,3 +145,8 @@ public class OrderProcessingWorkflow : Workflow<OrderPayload, OrderResult>
     }
 }
 ```
+
+## Next steps
+
+- [Learn more about Dapr workflow management operations]({{% ref dotnet-workflow-management-methods.md %}})
+- [Learn how to author workflows and activities]({{% ref howto-author-workflow.md %}})  
