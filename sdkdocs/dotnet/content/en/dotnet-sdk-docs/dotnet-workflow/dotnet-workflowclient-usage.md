@@ -83,7 +83,7 @@ await app.RunAsync();
 
 {{% tab "ASP.Net Core App" %}}
 
-In an ASP.Net Core application, you can inject the `DaprWorkflowClient` into your methods or controllers via method or constructor injection:
+In an ASP.Net Core application, you can inject the `DaprWorkflowClient` into methods or controllers via method or constructor injection. This example demonstrates method injection in a minimal API scenario:
 
 ```csharp
 app.MapPost("/start", async (
