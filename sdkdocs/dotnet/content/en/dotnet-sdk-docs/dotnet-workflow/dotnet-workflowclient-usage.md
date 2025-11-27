@@ -79,12 +79,39 @@ await app.RunAsync();
 
 ### Create a `DaprWorkflowClient` instance
 
-To create a `DaprWorkflowClient` instance in your `Program.cs`, retrieve it from the `ServiceProvider`:
+{{< tabpane text=true >}}
+
+{{% tab "ASP.Net Core App" %}}
+
+In an ASP.Net Core application, you can inject the `DaprWorkflowClient` into your methods or controllers via method or constructor injection:
+
+```csharp
+app.MapPost("/start", async (
+    DaprWorkflowClient daprWorkflowClient,
+    Order order
+    ) => {
+        var instanceId = await daprWorkflowClient.ScheduleNewWorkflowAsync(
+            nameof(OrderProcessingWorkflow),
+            input: order);
+
+        return Results.Accepted(instanceId);
+});
+```
+
+{{% /tab %}}
+
+{{% tab "Console App" %}}
+
+To create a `DaprWorkflowClient` instance in a console app, retrieve it from the `ServiceProvider`:
 
 ```csharp
 await using var scope = host.Services.CreateAsyncScope();
 var daprWorkflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
 ```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
 
 Now, you can use this client to perform workflow management operations such as starting, pausing, resuming, and terminating a workflow instance. See [Workflow management operations with `DaprWorkflowClient`]({{% ref dotnet-workflow-management-methods.md %}}) for more information on these operations.
 
