@@ -87,7 +87,7 @@ In an ASP.Net Core application, you can inject the `DaprWorkflowClient` into met
 
 ```csharp
 app.MapPost("/start", async (
-    DaprWorkflowClient daprWorkflowClient,
+    [FromServices] DaprWorkflowClient daprWorkflowClient,
     Order order
     ) => {
         var instanceId = await daprWorkflowClient.ScheduleNewWorkflowAsync(
@@ -105,7 +105,7 @@ app.MapPost("/start", async (
 To create a `DaprWorkflowClient` instance in a console app, retrieve it from the `ServiceProvider`:
 
 ```csharp
-await using var scope = host.Services.CreateAsyncScope();
+using var scope = host.Services.CreateAsyncScope();
 var daprWorkflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
 ```
 
