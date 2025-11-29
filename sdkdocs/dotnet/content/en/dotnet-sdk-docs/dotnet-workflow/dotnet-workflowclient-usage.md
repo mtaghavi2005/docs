@@ -29,7 +29,7 @@ as well as its own dependencies.
 
 ### Singleton Registration
 
-By default, the `AddDaprWorkflow` method will register the `DaprWorkflowClient` and associated services using a singleton lifetime. This means
+By default, the `AddDaprWorkflow` method registers the `DaprWorkflowClient` and associated services using a singleton lifetime. This means
 that the services are instantiated only a single time.
 
 The following is an example of how registration of the `DaprWorkflowClient` as it would appear in a typical `Program.cs` file:
