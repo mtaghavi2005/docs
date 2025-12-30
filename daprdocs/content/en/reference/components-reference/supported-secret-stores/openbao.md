@@ -14,4 +14,10 @@ the `secretstores.hashicorp.vault` component, which has been tested and
 confirmed to work effectively.
 
 For instructions on how to set up and configure a secret store, refer to [the
-HashiCorp Vault guide]({{% ref "hashicorp-vault.md" %}}).
+HashiCorp Vault guide]({{% ref "hashicorp-vault.md" %}}). The same metadata
+fields are compatible with OpenBao.
+
+## Further Informations
+
+- [OpenBao Website](https://openbao.org)
+- [OpenBao Docs](https://openbao.org/docs)
