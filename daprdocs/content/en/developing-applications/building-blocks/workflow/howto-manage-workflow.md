@@ -399,7 +399,7 @@ wf_client.pause_workflow(instance_id=instance_id)
 # Resume the workflow
 wf_client.resume_workflow(instance_id=instance_id)
 
-# Raise an event on the workflow. 
+# Raise an event on the workflow.
 wf_client.raise_workflow_event(instance_id=instance_id, event_name=event_name, data=event_data)
 
 # Purge the workflow
