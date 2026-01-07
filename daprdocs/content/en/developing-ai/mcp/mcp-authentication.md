@@ -44,6 +44,7 @@ It enforces access control, isolates users, and protects privileged tools and da
 ### Define the MCP Server as an HTTPEndpoint
 
 Dapr allows developers and operators to model remote HTTP services as resources that can be governed and invoked using the Dapr [Service Invocation API]({{% ref "service-invocation-overview" %}}).
+Create this `HTTPEndpoint` resource to represent the MCP server:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -58,6 +59,8 @@ spec:
 ```
 
 ### Define the OAuth2 middleware and configuration components
+
+The following middleware component defines the connection to the OAuth2 provider:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -80,7 +83,7 @@ spec:
     value: "<comma-separated scopes>"
 ```
 
-Next, create the configuration resource.
+Next, create the configuration resource which tells Dapr to use the OAuth2 middleware:
 
 ```yaml
 piVersion: dapr.io/v1alpha1
