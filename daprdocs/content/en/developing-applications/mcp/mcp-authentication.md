@@ -147,7 +147,7 @@ If properly configured, the MCP client causes Dapr to start an OAuth2 pipeline b
 
 ### Define the OAuth2 middleware and configuration components
 
-We define a middleware component the same as above.
+Define a middleware component the same as the client example.
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
