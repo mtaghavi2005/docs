@@ -135,7 +135,7 @@ if __name__ == "__main__":
 
 ### Run the MCP client with Dapr
 
-Put the YAML files above in `components` directory and run Dapr:
+Put the YAML files above into a `components` directory and run Dapr:
 
 ```bash
 dapr run --app-id mcpclient --resources-path ./components --dapr-http-port 3500 --config ./config.yaml -- python mcpclient.py
