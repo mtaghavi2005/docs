@@ -3,7 +3,7 @@ type: docs
 title: "MCP"
 linkTitle: "MCP"
 weight: 25
-description: "Dapr helps developers run secure and reliable MCP servers"
+description: "Dapr helps developers run secure and reliable Model Context Protocol (MCP) servers"
 ---
 
 ###  What does Dapr do for MCP servers?
