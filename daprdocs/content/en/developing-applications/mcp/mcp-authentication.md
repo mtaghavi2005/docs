@@ -8,7 +8,7 @@ description: "How to enable MCP client-side and server-side authentication"
 
 ## Overview
 
-The MCP specification does not mandate any form of authentication between an MCP client and server. The security model is left to the user to plan and implement, which creates a maintanance burden on developers and opens up MCP servers to various attack surfaces.
+The MCP specification. (https://modelcontextprotocol.io/specification/) does not mandate any form of authentication between an MCP client and server. The security model is left to the user to plan and implement. This creates a maintenance burden on developers and opens up MCP servers to various attack surfaces.
 
 While MCP servers lack identity, OAuth2 is a well established standard that can be used to properly authenticate MCP clients to MCP servers.
 
