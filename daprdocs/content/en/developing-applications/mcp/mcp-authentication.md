@@ -80,7 +80,7 @@ spec:
     value: "<comma-separated scopes>"
 ```
 
-Next, create the configuration component.
+Next, create the configuration resource.
 
 ```yaml
 piVersion: dapr.io/v1alpha1
