@@ -211,7 +211,11 @@ Learn more in [the workflow API reference guide]({{% ref workflow_api.md %}}).
 
 ## Versioning
 
-Workflows can be versioned in two different ways, each of them with their own advantages and disadvantages. This is necessary when a non-deterministic change needs to be introduced to the workflow code.
+Workflows can run for very long periods of time, and during that time we want to still be able to introduce changes to the workflow code. When the changes are non-deterministic, we need to use a versioning scheme to version the workflow code so existing workflows can continue running in the old version of the code while new workflows run in the new version of the code.
+
+Workflows can be versioned in two different ways, each of them with their own advantages and disadvantages. These are:
+- [Full workflow versioning](#full-workflow-versioning)
+- [Patching](#patching)
 
 
 {{% alert title="Note" color="primary" %}}
