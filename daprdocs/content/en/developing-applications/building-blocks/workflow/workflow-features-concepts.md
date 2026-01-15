@@ -205,9 +205,97 @@ Learn more about [external system interaction.]({{% ref "workflow-patterns.md#ex
 
 ## Purging
 
-Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state.
 
 Learn more in [the workflow API reference guide]({{% ref workflow_api.md %}}).
+
+## Versioning
+
+Workflows can be versioned in two different ways, each of them with their own advantages and disadvantages. This is necessary when a non-deterministic change needs to be introduced to the workflow code.
+
+
+{{% alert title="Note" color="primary" %}}
+In either of the versioning schemes, workflows can get to the `stalled` state. This usually happens during rollouts, when old and new versions of the workflow code coexist.
+
+A versioned workflow gets stalled when it started in a new replica but the next replay runs in an old replica.
+
+Stalled workflows will eventually run in a newer replica and will continue.
+
+If a workflow never gets unstalled it means the conditions for getting stalled are still present and will need to be addressed. See the specific reasons for getting stalled in the each of the versioning schemes.
+
+{{% /alert %}}
+
+
+### Full workflow versioning
+
+This is the traditional way of versioning workflows. The whole workflow code is versioned. This is the easiest way to version workflows and is the recommended way to version workflows.
+
+The different SDKs will expose a way to register multiple handlers for the same workflow name, and will have a way to specify which one is the latest version.
+
+{{< tabpane text=true >}}
+
+{{% tab "Go" %}}
+
+```go
+registry := task.NewTaskRegistry()
+registry.AddVersionedOrchestrator("ProcessOrders", false, OrderProcessingWorkflow)
+registry.AddVersionedOrchestrator("ProcessOrders", true, OrderProcessingWorkflowV2)
+
+registry.AddVersionedOrchestratorN("ProcessPayments", "v1", false, ProcessPaymentsWorkflow)
+registry.AddVersionedOrchestratorN("ProcessPayments", "v2", true, ProcessPaymentsWorkflowV2)
+
+```
+
+**Note**: The boolean argument to `AddVersionedOrchestrator` indicates whether the workflow the latest version.
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+In this versioning scheme, a workflow that started in a specific version will always use the same version of the workflow code even if the workflow code is updated and that version is no longer the latest version.
+
+New workflow instances will always use the latest version of the workflow code.
+
+When the SDK receives a request to run a workflow in a version that is not registered, the workflow will get stalled. As mentioned previously, this can happen naturally during rollouts, but it can also happen if a version is removed while some workflow instances are still using it.
+
+### Patching
+
+This is a narrower way of versioning workflows, as it allows introducing non-deterministic changes to the workflow code without duplicating the whole workflow code.
+
+
+{{< tabpane text=true >}}
+
+{{% tab "Go" %}}
+
+```go
+func UserSignupWorkflow(ctx *task.OrchestrationContext) error {
+  // ...
+  if ctx.IsPatched("use-sms") {
+    if err := ctx.CallActivity("SendSMS", ctx.GetInput()).Await(); err != nil {
+      return err
+    }
+  } else {
+    if err := ctx.CallActivity("SendEmail", ctx.GetInput()).Await(); err != nil {
+      return err
+    }
+  }
+  // ...
+}
+
+```
+
+{{% /tab %}}
+
+{{< /tabpane >}}
+
+In this versioning scheme, new workflow instances will take the patched code path, but existing workflow instances that are already running at the time the patch is introduced will continue to use the original code path.
+
+The list of patches that are applied to a workflow are stored in the workflow's history, so it's important to be mindful about the amount of patches that are applied to a workflow so the workflow state doesn't grow too large. At this point, consider using Full workflow versioning instead.
+
+There are multiple reasons for workflows to get stalled when using this versioning scheme:
+- Removing (or renaming) a patch check.
+- Changing the order of patch checks. It's important to keep the same order of checks throughout the workflow code.
+
 
 ## Limitations
 
@@ -217,8 +305,8 @@ To take advantage of the workflow replay technique, your workflow code needs to 
 
 #### Workflow functions must call deterministic APIs.
 APIs that generate random numbers, random UUIDs, or the current date are _non-deterministic_. To work around this limitation, you can:
- - Use these APIs in activity functions, or 
- - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.  
+ - Use these APIs in activity functions, or
+ - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.
 
 For example, instead of this:
 
@@ -278,7 +366,7 @@ Do this:
 // Do this!!
 DateTime currentTime = context.CurrentUtcDateTime;
 Guid newIdentifier = context.NewGuid();
-string randomString = await context.CallActivityAsync<string>(nameof("GetRandomString")); //Use "nameof" to prevent specifying an activity name that does not exist in your application 
+string randomString = await context.CallActivityAsync<string>(nameof("GetRandomString")); //Use "nameof" to prevent specifying an activity name that does not exist in your application
 ```
 
 {{% /tab %}}
@@ -503,7 +591,7 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% tab "JavaScript" %}}
 
-Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions. 
+Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions.
 
 {{% /tab %}}
 
@@ -545,7 +633,7 @@ To work around these constraints:
 - [Try out Dapr Workflow using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
-- Try out the following examples: 
+- Try out the following examples:
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
