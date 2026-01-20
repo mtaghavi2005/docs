@@ -213,7 +213,7 @@ Learn more in [the workflow API reference guide]({{% ref workflow_api.md %}}).
 
 Workflows can run for very long periods of time, and during that time we want to still be able to introduce changes to the workflow code. When the changes are non-deterministic, we need to use a versioning scheme to version the workflow code so existing workflows can continue running in the old version of the code while new workflows run in the new version of the code.
 
-Workflows can be versioned in two different ways, each of them with their own advantages and disadvantages. These are:
+Workflows can be versioned in two different ways, each of them with their own advantages. These are:
 - [Full workflow versioning](#full-workflow-versioning)
 - [Patching](#patching)
 
@@ -242,15 +242,19 @@ The different SDKs will expose a way to register multiple handlers for the same 
 
 ```go
 registry := task.NewTaskRegistry()
+// This is the previous workflow version, so `isLatest` is false
 registry.AddVersionedOrchestrator("ProcessOrders", false, OrderProcessingWorkflow)
+// This is the latest workflow version, so `isLatest` is true
 registry.AddVersionedOrchestrator("ProcessOrders", true, OrderProcessingWorkflowV2)
 
+// This is the previous workflow version, so `isLatest` is false
 registry.AddVersionedOrchestratorN("ProcessPayments", "v1", false, ProcessPaymentsWorkflow)
+// This is the latest workflow version, so `isLatest` is true
 registry.AddVersionedOrchestratorN("ProcessPayments", "v2", true, ProcessPaymentsWorkflowV2)
 
 ```
 
-**Note**: The boolean argument to `AddVersionedOrchestrator` indicates whether the workflow the latest version.
+**Note**: The boolean argument to `AddVersionedOrchestratorN` indicates whether the workflow is the latest version.
 
 {{% /tab %}}
 
@@ -264,7 +268,7 @@ When the SDK receives a request to run a workflow in a version that is not regis
 
 ### Patching
 
-This is a narrower way of versioning workflows, as it allows introducing non-deterministic changes to the workflow code without duplicating the whole workflow code.
+This versioning approach allows you to introduce deterministic changes to a specific part of an existing workflow, rather than creating an entirely new version of the whole workflow. The patching mechanism ensures these targeted changes remain deterministic, whereas without this approach, making such modifications within the workflow code would result in non-determinism. This is especially useful when you want to update or improve just one section of a workflow without duplicating all of its logic.
 
 
 {{< tabpane text=true >}}
@@ -298,7 +302,7 @@ The list of patches that are applied to a workflow are stored in the workflow's 
 
 There are multiple reasons for workflows to get stalled when using this versioning scheme:
 - Removing (or renaming) a patch check.
-- Changing the order of patch checks. It's important to keep the same order of checks throughout the workflow code.
+- Changing the order of patch checks. It's required to keep the same order of checks throughout the workflow code.
 
 
 ## Limitations
