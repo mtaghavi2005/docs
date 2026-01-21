@@ -251,10 +251,33 @@ registry.AddVersionedOrchestrator("ProcessOrders", true, OrderProcessingWorkflow
 registry.AddVersionedOrchestratorN("ProcessPayments", "v1", false, ProcessPaymentsWorkflow)
 // This is the latest workflow version, so `isLatest` is true
 registry.AddVersionedOrchestratorN("ProcessPayments", "v2", true, ProcessPaymentsWorkflowV2)
-
 ```
 
 **Note**: The boolean argument to `AddVersionedOrchestratorN` indicates whether the workflow is the latest version.
+
+{{% /tab %}}
+
+{{% tab "Python" %}}
+
+```python
+@wfr.versioned_workflow(name="process-orders")
+def order_processing_workflow(ctx: wf.DaprWorkflowContext):
+  # ...
+
+@wfr.versioned_workflow(name="process-orders", is_latest=True)
+def order_processing_workflow_v2(ctx: wf.DaprWorkflowContext):
+  # ...
+
+# Or providing a version name
+
+@wfr.versioned_workflow(name="process-payments", version_name="v1")
+def process_payments_workflow(ctx: wf.DaprWorkflowContext):
+  # ...
+
+@wfr.versioned_workflow(name="process-payments", version_name="v2", is_latest=True)
+def process_payments_workflow_v2(ctx: wf.DaprWorkflowContext):
+  # ...
+```
 
 {{% /tab %}}
 
@@ -290,6 +313,21 @@ func UserSignupWorkflow(ctx *task.OrchestrationContext) error {
   // ...
 }
 
+```
+
+{{% /tab %}}
+
+{{% tab "Python" %}}
+
+```python
+@wfr.workflow
+def user_signup_workflow(ctx: wf.DaprWorkflowContext):
+  # ...
+  if ctx.is_patched("use-sms"):
+    yield ctx.call_activity(send_sms)
+  else:
+    yield ctx.call_activity(send_email)
+  # ...
 ```
 
 {{% /tab %}}
