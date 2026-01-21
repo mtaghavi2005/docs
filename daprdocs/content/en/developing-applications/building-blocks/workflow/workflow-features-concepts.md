@@ -211,7 +211,7 @@ Learn more in [the workflow API reference guide]({{% ref workflow_api.md %}}).
 
 ## Versioning
 
-Workflows can run for very long periods of time, and during that time we want to still be able to introduce changes to the workflow code. When the changes are non-deterministic, we need to use a versioning scheme to version the workflow code so existing workflows can continue running in the old version of the code while new workflows run in the new version of the code.
+There are multiple scenarios where it is necessary to introduce changes to workflow code while workflows are actively running. In cases where these changes are non-deterministic, a versioning scheme is required so that existing workflows can continue executing with the original code, while new workflows use the updated version.
 
 Workflows can be versioned in two different ways, each of them with their own advantages. These are:
 - [Full workflow versioning](#full-workflow-versioning)
@@ -219,18 +219,18 @@ Workflows can be versioned in two different ways, each of them with their own ad
 
 
 {{% alert title="Note" color="primary" %}}
-In either of the versioning schemes, workflows can get to the `stalled` state. This usually happens during rollouts, when old and new versions of the workflow code coexist.
+In either of the versioning schemes, workflows can reach the `stalled` state. This usually happens during rollouts, when old and new versions of the workflow code coexist.
 
-A versioned workflow gets stalled when it started in a new replica but the next replay runs in an old replica.
+A versioned workflow stalls when it's started in a new replica but the next replay runs in an old replica.
 
 Stalled workflows will eventually run in a newer replica and will continue.
 
-If a workflow never gets unstalled it means the conditions for getting stalled are still present and will need to be addressed. See the specific reasons for getting stalled in the each of the versioning schemes.
+If a workflow never continues it means the conditions for getting stalled are still present and will need to be addressed. See the specific reasons for getting stalled in the each of the versioning schemes.
 
 {{% /alert %}}
 
 
-### Full workflow versioning
+### Named Workflow Versioning
 
 This is the traditional way of versioning workflows. The whole workflow code is versioned. This is the easiest way to version workflows and is the recommended way to version workflows.
 
@@ -264,7 +264,7 @@ In this versioning scheme, a workflow that started in a specific version will al
 
 New workflow instances will always use the latest version of the workflow code.
 
-When the SDK receives a request to run a workflow in a version that is not registered, the workflow will get stalled. As mentioned previously, this can happen naturally during rollouts, but it can also happen if a version is removed while some workflow instances are still using it.
+When the SDK receives a request to run a workflow in a version that is not registered, the workflow will stall. As mentioned previously, this can happen naturally during rollouts, but it can also happen if a version is removed while some workflow instances are still using it. Best practice is that versions shouldn't be deleted at all unless the workflow is no longer in use altogether to avoid such an inadvertent stall
 
 ### Patching
 
@@ -298,9 +298,9 @@ func UserSignupWorkflow(ctx *task.OrchestrationContext) error {
 
 In this versioning scheme, new workflow instances will take the patched code path, but existing workflow instances that are already running at the time the patch is introduced will continue to use the original code path.
 
-The list of patches that are applied to a workflow are stored in the workflow's history, so it's important to be mindful about the amount of patches that are applied to a workflow so the workflow state doesn't grow too large. At this point, consider using Full workflow versioning instead.
+The list of patches that are applied to a workflow are stored in the workflow's history, so it's important to be mindful about the amount of patches that are applied to a workflow so the workflow state doesn't grow too large. Consider transitioning to a named workflow version and removing all your patches when your patch logic grows unwieldy.
 
-There are multiple reasons for workflows to get stalled when using this versioning scheme:
+There are multiple reasons for workflows to stall when using this versioning scheme:
 - Removing (or renaming) a patch check.
 - Changing the order of patch checks. It's required to keep the same order of checks throughout the workflow code.
 
@@ -311,7 +311,7 @@ There are multiple reasons for workflows to get stalled when using this versioni
 
 To take advantage of the workflow replay technique, your workflow code needs to be deterministic. For your workflow code to be deterministic, you may need to work around some limitations.
 
-#### Workflow functions must call deterministic APIs.
+#### Workflow functions must call deterministic APIs
 APIs that generate random numbers, random UUIDs, or the current date are _non-deterministic_. To work around this limitation, you can:
  - Use these APIs in activity functions, or
  - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.
