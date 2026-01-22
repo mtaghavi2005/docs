@@ -1173,12 +1173,12 @@ dapr workflow run hello_world_wf --app-id workflow-app --input 'hello world' --i
 
 #### Check the workflow status
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+dapr workflow list --app-id workflow-app -o wide
 ```
 
 #### Check completed workflows
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+dapr workflow list --app-id workflow-app --filter-status COMPLETED -o wide
 ```
 
 #### View workflow history
@@ -1208,7 +1208,7 @@ dapr workflow run sequence --app-id workflow-app --input 'hello world' --instanc
 
 #### Check the workflow status
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+dapr workflow list --app-id workflow-app -o wide
 ```
 
 #### Raise the waiting external event
@@ -1218,7 +1218,7 @@ dapr workflow raise-event --app-id workflow-app test-run/businessEvent
 
 #### Check completed workflows
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+dapr workflow list --app-id workflow-app --filter-status COMPLETED -o wide
 ```
 
 #### View workflow history
@@ -1248,7 +1248,7 @@ dapr workflow run OrderProcessingWorkflow --app-id workflow-app  --instance-id t
 
 #### Check the workflow status
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+dapr workflow list --app-id workflow-app -o wide
 ```
 
 #### Raise the waiting external event
@@ -1258,7 +1258,7 @@ dapr workflow raise-event --app-id workflow-app test-run/incoming-purchase-order
 
 #### Check completed workflows
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+dapr workflow list --app-id workflow-app --filter-status COMPLETED -o wide
 ```
 
 #### View workflow history
@@ -1289,7 +1289,7 @@ dapr workflow run DemoWorkflow --app-id workflow-app  --instance-id test-run --i
 
 #### Check the workflow status
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+dapr workflow list --app-id workflow-app -o wide
 ```
 
 #### Raise the waiting external event
@@ -1302,7 +1302,7 @@ dapr workflow raise-event --app-id workflow-app test-run/event3 --input 'TestEve
 
 #### Check completed workflows
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+dapr workflow list --app-id workflow-app --filter-status COMPLETED -o wide
 ```
 
 #### View workflow history
@@ -1332,7 +1332,7 @@ dapr workflow run BusinessWorkflow --app-id workflow-app --input '1' --instance-
 
 #### Check the workflow status
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 -o wide
+dapr workflow list --app-id workflow-app -o wide
 ```
 
 #### Raise the waiting external event
@@ -1342,7 +1342,7 @@ dapr workflow raise-event --app-id workflow-app test-run/businessEvent
 
 #### Check completed workflows
 ```bash
-dapr workflow list --app-id workflow-app --connection-string=redis://127.0.0.1:6379 --filter-status COMPLETED -o wide
+dapr workflow list --app-id workflow-app --filter-status COMPLETED -o wide
 ```
 
 #### View workflow history
