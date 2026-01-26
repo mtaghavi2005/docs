@@ -344,6 +344,22 @@ There are multiple reasons for workflows to stall when using this versioning sch
 - Removing (or renaming) a patch check.
 - Changing the order of patch checks. It's required to keep the same order of checks throughout the workflow code.
 
+This is what the `dapr workflow list` would look like when a workflow is stalled:
+```bash
+> dapr workflow list
+NAME           ID          STATUS     AGE
+workflow       <ID>        STALLED    9m39s
+```
+
+This is what the `dapr workflow history` would look like when a workflow is stalled:
+```bash
+❯ go run . workflow history <ID> -k -o wide
+PLAY  TYPE                 NAME      TIMESTAMP    ELAPSED    STATUS   DETAILS        ROUTER     EXECUTION ID  ATTRS
+0     ExecutionStarted     workflow  <TIMESTAMP>  Age:15.8h  RUNNING  workflowStart  workflows  <EXEC_ID>     input=2026-01-22T14:44:02.728101
+1     OrchestratorStarted            <TIMESTAMP>  25.3ms     RUNNING  replay                                  versionName=workflow_v1
+1     ExecutionStalled               <TIMESTAMP>  8.9m       STALLED                                          reason=VERSION_NAME_MISMATCH;description=Version not available: workflow_v1
+```
+
 
 ## Limitations
 
