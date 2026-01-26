@@ -243,14 +243,16 @@ The different SDKs will expose a way to register multiple handlers for the same 
 ```go
 registry := task.NewTaskRegistry()
 // This is the previous workflow version, so `isLatest` is false
-registry.AddVersionedOrchestrator("ProcessOrders", false, OrderProcessingWorkflow)
+registry.AddVersionedOrchestrator("Workflow", false, WorkflowV1)
 // This is the latest workflow version, so `isLatest` is true
-registry.AddVersionedOrchestrator("ProcessOrders", true, OrderProcessingWorkflowV2)
+registry.AddVersionedOrchestrator("Workflow", true, WorkflowV2)
+
+// Or providing a version name
 
 // This is the previous workflow version, so `isLatest` is false
-registry.AddVersionedOrchestratorN("ProcessPayments", "v1", false, ProcessPaymentsWorkflow)
+registry.AddVersionedOrchestratorN("Workflow", "v1", false, WorkflowV1)
 // This is the latest workflow version, so `isLatest` is true
-registry.AddVersionedOrchestratorN("ProcessPayments", "v2", true, ProcessPaymentsWorkflowV2)
+registry.AddVersionedOrchestratorN("Workflow", "v2", true, WorkflowV2)
 ```
 
 **Note**: The boolean argument to `AddVersionedOrchestratorN` indicates whether the workflow is the latest version.
@@ -260,22 +262,22 @@ registry.AddVersionedOrchestratorN("ProcessPayments", "v2", true, ProcessPayment
 {{% tab "Python" %}}
 
 ```python
-@wfr.versioned_workflow(name="process-orders")
-def order_processing_workflow(ctx: wf.DaprWorkflowContext):
+@wfr.versioned_workflow(name="workflow")
+def workflow_v1(ctx: wf.DaprWorkflowContext):
   # ...
 
-@wfr.versioned_workflow(name="process-orders", is_latest=True)
-def order_processing_workflow_v2(ctx: wf.DaprWorkflowContext):
+@wfr.versioned_workflow(name="workflow", is_latest=True)
+def workflow_v2(ctx: wf.DaprWorkflowContext):
   # ...
 
 # Or providing a version name
 
-@wfr.versioned_workflow(name="process-payments", version_name="v1")
-def process_payments_workflow(ctx: wf.DaprWorkflowContext):
+@wfr.versioned_workflow(name="workflow", version_name="v1")
+def workflow_v1(ctx: wf.DaprWorkflowContext):
   # ...
 
-@wfr.versioned_workflow(name="process-payments", version_name="v2", is_latest=True)
-def process_payments_workflow_v2(ctx: wf.DaprWorkflowContext):
+@wfr.versioned_workflow(name="workflow", version_name="v2", is_latest=True)
+def workflow_v2(ctx: wf.DaprWorkflowContext):
   # ...
 ```
 
@@ -299,7 +301,7 @@ This versioning approach allows you to introduce deterministic changes to a spec
 {{% tab "Go" %}}
 
 ```go
-func UserSignupWorkflow(ctx *task.OrchestrationContext) error {
+func Workflow(ctx *task.OrchestrationContext) error {
   // ...
   if ctx.IsPatched("use-sms") {
     if err := ctx.CallActivity("SendSMS", ctx.GetInput()).Await(); err != nil {
@@ -321,7 +323,7 @@ func UserSignupWorkflow(ctx *task.OrchestrationContext) error {
 
 ```python
 @wfr.workflow
-def user_signup_workflow(ctx: wf.DaprWorkflowContext):
+def workflow(ctx: wf.DaprWorkflowContext):
   # ...
   if ctx.is_patched("use-sms"):
     yield ctx.call_activity(send_sms)
