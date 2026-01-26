@@ -338,6 +338,8 @@ def workflow(ctx: wf.DaprWorkflowContext):
 
 In this versioning scheme, new workflow instances will take the patched code path, but existing workflow instances that are already running at the time the patch is introduced will continue to use the original code path.
 
+Patch checks are recorded in the workflow instance history the first time they are evaluated. This means you can safely check the same patch multiple times throughout the workflow, and all checks will resolve the same way for that workflow instance.
+
 The list of patches that are applied to a workflow are stored in the workflow's history, so it's important to be mindful about the amount of patches that are applied to a workflow so the workflow state doesn't grow too large. Consider transitioning to a named workflow version and removing all your patches when your patch logic grows unwieldy.
 
 There are multiple reasons for workflows to stall when using this versioning scheme:
