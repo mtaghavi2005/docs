@@ -148,7 +148,7 @@ Put the YAML files above into a `components` directory and run Dapr:
 dapr run --app-id mcpclient --resources-path ./components --dapr-http-port 3500 --config ./config.yaml -- python mcpclient.py
 ```
 
-If properly configured, the MCP client causes Dapr to start an OAuth2 pipeline before connecting to the MCP server.  
+The MCP client causes Dapr to start an OAuth2 pipeline before connecting to the MCP server.  
 
 ## How to enable Server-side Authentication
 
