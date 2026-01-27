@@ -6,7 +6,7 @@ weight: 8000
 description: "Configure custom annotations on the Dapr sidecar service"
 ---
 
-The Dapr operator automatically creates a Service for the Dapr sidecar when running in Kubernetes. In some cases, you may need to add custom annotations to this service, for example to support specific network policies or metrics scraping configurations.
+The Dapr operator automatically creates a Service (named with the `-dapr` suffix) for the Dapr sidecar when running in Kubernetes. In some cases, you may need to add custom annotations to this service, for example to support specific network policies (such as Illumio) or metrics scraping configurations.
 
 ## Overview
 
