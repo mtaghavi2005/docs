@@ -3,7 +3,7 @@ type: docs
 title: "Pub/sub API reference"
 linkTitle: "Pub/Sub API"
 description: "Detailed documentation on the pub/sub API"
-weight: 200
+weight: 1200
 ---
 
 ## Publish a message to a given topic
@@ -71,7 +71,7 @@ This endpoint lets you publish multiple messages to consumers who are listening 
 ### HTTP Request
 
 ```
-POST http://localhost:<daprPort>/v1.0-alpha1/publish/bulk/<pubsubname>/<topic>[?<metadata>]
+POST http://localhost:<daprPort>/v1.0/publish/bulk/<pubsubname>/<topic>[?<metadata>]
 ```
 
 The request body should contain a JSON array of entries with:
@@ -84,7 +84,7 @@ If the content type for an event is not `application/cloudevents+json`, it is au
 Example:
 
 ```bash
-curl -X POST http://localhost:3500/v1.0-alpha1/publish/bulk/pubsubName/deathStarStatus \
+curl -X POST http://localhost:3500/v1.0/publish/bulk/pubsubName/deathStarStatus \
   -H 'Content-Type: application/json' \
   -d '[
         {
