@@ -16,7 +16,7 @@ This example uses the Redis configuration store component to demonstrate how to 
 {{% /alert %}}
 
 {{% alert title="Disabling configuration initialization endpoint" color="primary" %}}
-If your application does not use configuration building block, you can disable the automatic HTTP call to `/dapr/config` endpoint during initialization to reduce log noise. Use the `--disable-init-endpoints config` flag with `dapr run`, or the `dapr.io/disable-init-endpoints: "config"` annotation in Kubernetes. [Learn more about disabling initialization endpoints.]({{% ref "arguments-annotations-overview#disable-init-endpoints" %}})
+If your application does not use the configuration building block, the automatic HTTP call to the `/dapr/config` endpoint during initialization can be disabled to reduce log noise. Use the `--disable-init-endpoints config` flag with `dapr run`, or the `dapr.io/disable-init-endpoints: "config"` annotation in Kubernetes. [Learn more about disabling initialization endpoints.]({{% ref "arguments-annotations-overview#disable-init-endpoints" %}})
 {{% /alert %}}
 
 
