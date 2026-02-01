@@ -27,7 +27,8 @@ The state of a workflow instance (actor) consists of several components:
 Stores high-level information about the instance:
 *   `instance_id`: The unique ID of the workflow.
 *   `name`: The name of the workflow.
-*   `status`: The current runtime status (Running, Completed, etc.).
+*   `status`: The current runtime status (Running, Completed, Stalled etc.).
+*   `version`: The name of the workflow version and any active patches.
 *   `created_at`: Creation timestamp.
 *   `last_updated_at`: Last activity timestamp.
 *   `input`: Original input data.
