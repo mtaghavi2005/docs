@@ -50,7 +50,7 @@ Imagine a workflow: `Activity A -> Activity B`.
 ### 2. Activity A Completes
 *   **Engine**: Records `TaskCompleted(Activity A, result="foo")` in history.
 *   **SDK**: Receives `OrchestratorWorkItem` with `[ExecutionStarted, TaskScheduled(A), TaskCompleted(A)]`.
-*   **SDK**: Runs function from start.
+*   **SDK**: Runs function from the start.
 *   **SDK**: Function calls `Activity A`. SDK finds `TaskCompleted(A)` in history. Returns `"foo"`.
 *   **SDK**: Function calls `Activity B`.
 *   **SDK**: Checks history. `Activity B` is not there.
