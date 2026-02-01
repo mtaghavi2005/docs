@@ -24,6 +24,20 @@ not need to be deterministic. They are executed exactly once per "schedule" (tho
     *   **Success**: The SDK provides the serialized output in the `result` field.
     *   **Failure**: The SDK provides `failure_details` (error message, type, stack trace).
 
+## Task Activity IDs
+
+In the Dapr runtime (specifically when using the Actors backend), activities are represented as actors. Each activity 
+execution has a unique **Task Activity ID** (also known as the Activity Actor ID).
+
+The ID follows a specific pattern:
+`{workflowInstanceID}::{taskID}::{generation}`
+
+*   **workflowInstanceID**: The unique ID of the workflow instance that scheduled the activity.
+*   **taskID**: The sequence number of the task within the workflow execution (e.g., 0, 1, 2...).
+*   **generation**: A counter that increments if the workflow is restarted or "continued as new".
+
+This unique ID ensures that activity executions are isolated and can be tracked reliably across retries and restarts.
+
 ## Retries
 
 Dapr handles activity retries based on the policy defined in the orchestration (if the SDK supports defining retry 
