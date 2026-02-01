@@ -74,10 +74,36 @@ The orchestration function MUST be deterministic. It cannot use:
 *   Direct IO (must be done in activities).
 *   Global state that can change between replays.
 
-### 2. History Management
+### 2. Patching (In-flight updates)
+
+When a workflow is already running, you might need to update its logic. However, since workflows are replay-based, 
+changing the logic directly would break determinism for in-flight instances.
+
+Dapr provides a **Patching** mechanism (e.g., `ctx.IsPatched("patch-id")`) to safely introduce changes:
+
+*   **Logic Branching**: The SDK provides an API to check if a specific "patch" is active for the current instance.
+*   **Patch Recording**: When a patch check is encountered during execution, the result (true/false) is recorded in 
+    the workflow history.
+*   **Consistency**: Once a patch is recorded as active (or inactive) for an instance, it remains so for the lifetime 
+    of that instance, even if the worker code changes or the instance is moved to another worker.
+*   **Safety**: The Dapr engine validates that the sequence of patches encountered during replay exactly matches the 
+    sequence in history. If there's a mismatch, the workflow enters a **Stalled** state to prevent data corruption.
+
+### 3. Stalled State
+
+A workflow instance enters the `STALLED` state when the engine detects an unrecoverable condition that requires manual 
+intervention or a code fix to proceed. Common reasons include:
+
+*   **Patch Mismatch**: The current code's patching logic contradicts the instance's history.
+*   **Execution Errors**: A fatal error occurred that cannot be handled by retries.
+
+When stalled, the instance stops execution but remains in the system. Once the underlying issue is resolved (e.g., 
+the correct code version is deployed), the instance can be resumed or will automatically resume on the next event.
+
+### 4. History Management
 The SDK must efficiently search the history. Typically, this is done by maintaining a counter of tasks encountered 
 during execution and matching them against the sequence of events in the history.
 
-### 3. Graceful Suspension
+### 5. Graceful Suspension
 The SDK needs a mechanism to stop execution of the orchestration function when a task is scheduled but not yet
 completed, without losing the ability to restart it later.
