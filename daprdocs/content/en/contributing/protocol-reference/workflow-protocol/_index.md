@@ -133,3 +133,5 @@ executors from the engine’s perspective.
    Dispatch, retries, idempotency, heartbeat semantics, and failure handling.
 5. [State & History]({{% ref workflow-protocol-state-and-history %}})
    History schema, state snapshots, and persistence guarantees.
+6. [Versioning]({{% ref workflow-protocol-versioning %}})
+   How Dapr handles multiple versions of the same workflow definition.
