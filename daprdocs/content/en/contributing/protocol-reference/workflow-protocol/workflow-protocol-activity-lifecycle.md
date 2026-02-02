@@ -23,8 +23,7 @@ engine sends an `ActivityWorkItem` via the `GetWorkItems` stream.
     *   `task_id`: A unique identifier for this specific activity execution.
     *   `task_execution_id`: A unique identifier for the specific *attempt* of this activity. This is useful for 
         implementing idempotency in activity logic.
-    *   `completion_token`: An opaque token used to correlate the response with this specific work item. See 
-        [Completion Tokens]({{% ref #completion-tokens $}}) for details.
+    *   `completion_token`: An opaque token used to correlate the response with this specific work item.
 4.  **Reporting**: After the activity logic finishes, the SDK sends a `CompleteActivityTask` request back to Dapr.
     *   **Success**: The SDK provides the serialized output in the `result` field.
     *   **Failure**: The SDK provides `failure_details` (error message, type, stack trace).
