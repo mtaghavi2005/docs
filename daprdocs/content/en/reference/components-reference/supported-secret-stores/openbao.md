@@ -45,7 +45,7 @@ spec:
       value: "map"
 ```
 
-## Further Informations
+## Further Information
 
 - [OpenBao Website](https://openbao.org)
 - [OpenBao Docs](https://openbao.org/docs)
