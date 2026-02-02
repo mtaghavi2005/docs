@@ -105,6 +105,25 @@ failed, or terminated instances.
 | `instance_id` | `string` | The ID of the workflow instance. |
 | `workflow_component` | `string` | The name of the workflow component. |
 
+## ListInstanceIDs (Task Hub Protocol Only)
+
+Retrieves a list of workflow instance IDs, optionally filtered by status or name. This is currently part of the 
+internal Task Hub protocol and used for pagination in management tools.
+
+**Request (`ListInstanceIDsRequest`):**
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `page_size` | `int32` | The maximum number of IDs to return. |
+| `continuation_token` | `string` | An opaque token used to retrieve the next page of results. |
+
+**Response (`ListInstanceIDsResponse`):**
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `instance_ids` | `repeated string` | The list of instance IDs. |
+| `continuation_token` | `string` | A token for the next page of results. |
+
 ## Implementation Details
 
 The sidecar receives these requests and translates them into operations on the underlying `durabletask-go` client. 

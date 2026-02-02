@@ -20,6 +20,7 @@ not need to be deterministic. They are executed exactly once per "schedule" (tho
     *   `input`: The input data for the activity.
     *   `instance_id`: The ID of the workflow instance that scheduled the activity.
     *   `task_id`: A unique identifier for this specific activity execution.
+    *   `task_execution_id`: A unique identifier for the specific *attempt* of this activity. This is useful for implementing idempotency in activity logic.
 4.  **Reporting**: After the activity logic finishes, the SDK sends a `CompleteActivityTask` request back to Dapr.
     *   **Success**: The SDK provides the serialized output in the `result` field.
     *   **Failure**: The SDK provides `failure_details` (error message, type, stack trace).
