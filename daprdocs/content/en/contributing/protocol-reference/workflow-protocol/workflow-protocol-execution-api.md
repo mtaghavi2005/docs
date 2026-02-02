@@ -73,6 +73,7 @@ Reports the result of an activity execution.
 **Request (`ActivityResponse`):**
 *   `instance_id`: The ID of the workflow instance.
 *   `task_id`: The unique ID of the activity task.
+*   `completion_token`: The opaque token received in the `ActivityWorkItem`.
 *   `result`: The serialized output of the activity (if successful).
 *   `failure_details`: Details about the error (if failed).
 
