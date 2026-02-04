@@ -26,7 +26,7 @@ kind: Component
 metadata:
   name: openbao
 spec:
-  # we will use the secrets store provider
+  # Use the secrets store provider
   # from vault
   type: secretstores.hashicorp.vault
   version: v1
