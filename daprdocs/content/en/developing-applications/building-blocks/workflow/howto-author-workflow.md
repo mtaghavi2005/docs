@@ -1399,7 +1399,6 @@ Now that you've authored a workflow, learn how to manage it.
 
 ## Related links
 - [Workflow overview]({{% ref workflow-overview.md %}})
-- [Workflow API reference]({{% ref workflow_api.md %}})
 - Try out the full SDK examples:
   - [Python example](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
   - [JavaScript example](https://github.com/dapr/js-sdk/tree/main/examples/workflow)

@@ -7,7 +7,6 @@ description: Manage and run workflows
 ---
 
 Now that you've [authored the workflow and its activities in your application]({{% ref howto-author-workflow.md %}}), you can start, terminate, rerun, and get information about the workflow using the CLI or API calls.
-For more information, read the [workflow API reference]({{% ref workflow_api.md %}}).
 
 {{< tabpane text=true >}}
 
@@ -611,10 +610,6 @@ To fetch workflow information (outputs and inputs) with an ID `12345678`, run:
 ```shell
 curl -X GET "http://localhost:3500/v1.0/workflows/dapr/12345678"
 ```
-
-Learn more about these HTTP calls in the [workflow API reference guide]({{% ref workflow_api.md %}}).
-
-
 {{% /tab %}}
 
 {{< /tabpane >}}
@@ -633,5 +628,3 @@ Now that you've learned how to manage workflows, learn how to execute workflows 
   - [.NET example](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
   - [Java example](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
   - [Go example](https://github.com/dapr/go-sdk/tree/main/examples/workflow)
-
-- [Workflow API reference]({{% ref workflow_api.md %}})
