@@ -289,11 +289,13 @@ In this versioning scheme, a workflow that started in a specific version will al
 
 New workflow instances will always use the latest version of the workflow code.
 
-When the SDK receives a request to run a workflow in a version that is not registered, the workflow will stall. As mentioned previously, this can happen naturally during rollouts, but it can also happen if a version is removed while some workflow instances are still using it. Best practice is that versions shouldn't be deleted at all unless the workflow is no longer in use altogether to avoid such an inadvertent stall
+When the SDK receives a request to run a workflow in a version that is not registered, the workflow will stall. This can happen naturally during Kubernetes rollouts, but can also happen if a version is removed while some workflow instances are still using it. The best practice is that versions shouldn't be deleted at all unless the workflow is no longer in use altogether to avoid such an inadvertent stall.
 
 ### Patching
 
 This versioning approach allows you to introduce deterministic changes to a specific part of an existing workflow, rather than creating an entirely new version of the whole workflow. The patching mechanism ensures these targeted changes remain deterministic, whereas without this approach, making such modifications within the workflow code would result in non-determinism. This is especially useful when you want to update or improve just one section of a workflow without duplicating all of its logic.
+
+To use patching, add a patch check with a stable, unique name (for example, `use-sms`) and branch your workflow logic based on the boolean return value. This lets you keep the original code path for workflow instances that haven't recorded the patch, while enabling the updated code path (such as calling a new activity) for instances where the patch has been applied. The following example checks if the `use-sms` patch has been applied to this workflow instance. If so, the `SendSMS` activity is executed; otherwise, it falls back to `SendEmail`.
 
 
 {{< tabpane text=true >}}
@@ -346,14 +348,14 @@ There are multiple reasons for workflows to stall when using this versioning sch
 - Removing (or renaming) a patch check.
 - Changing the order of patch checks. It's required to keep the same order of checks throughout the workflow code.
 
-This is what the `dapr workflow list` would look like when a workflow is stalled:
+You can use the [workflow commands in the Dapr CLI](https://docs.dapr.io/reference/cli/dapr-workflow/) to check for stalled workflows. For example, the following is what the `dapr workflow list` command would look like if a workflow is stalled:
 ```bash
 > dapr workflow list
 NAME           ID          STATUS     AGE
 workflow       <ID>        STALLED    9m39s
 ```
 
-This is what the `dapr workflow history` would look like when a workflow is stalled:
+The following is what the `dapr workflow history` command would look like when a workflow is stalled:
 ```bash
 ❯ go run . workflow history <ID> -k -o wide
 PLAY  TYPE                 NAME      TIMESTAMP    ELAPSED    STATUS   DETAILS        ROUTER     EXECUTION ID  ATTRS
