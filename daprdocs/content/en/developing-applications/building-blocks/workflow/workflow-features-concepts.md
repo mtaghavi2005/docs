@@ -211,7 +211,7 @@ Learn more in [the workflow API reference guide]({{% ref workflow_api.md %}}).
 
 ## Versioning
 
-There are multiple scenarios where it is necessary to introduce changes to workflow code while workflows are actively running. In cases where these changes are non-deterministic, a versioning scheme is required so that existing workflows can continue executing with the original code, while new workflows use the updated version.
+There are multiple scenarios where it is necessary to introduce changes to workflow code while workflows are actively running. In cases where these changes are non-deterministic, a versioning strategy is required so that existing workflows can continue executing with the original code, while new workflows use the updated version.
 
 Workflows can be versioned in two different ways, each of them with their own advantages. These are:
 - [Full workflow versioning](#full-workflow-versioning)
@@ -219,22 +219,21 @@ Workflows can be versioned in two different ways, each of them with their own ad
 
 
 {{% alert title="Note" color="primary" %}}
-In either of the versioning schemes, workflows can reach the `stalled` state. This usually happens during rollouts, when old and new versions of the workflow code coexist.
+In either versioning strategy, workflows can reach the `stalled` state. This typically occurs during rollouts, when both old and new versions of the workflow code are running at the same time.
 
-A versioned workflow stalls when it's started in a new replica but the next replay runs in an old replica.
+A versioned workflow becomes stalled when it is started on a new replica, but a subsequent replay is attempted on an old replica.
 
-Stalled workflows will eventually run in a newer replica and will continue.
+Workflows can remain stalled for the entire duration of the rollout, until there are only new replicas available. Once a stalled workflow is scheduled on a new replica, it will continue executing.
 
-If a workflow never continues it means the conditions for getting stalled are still present and will need to be addressed. See the specific reasons for getting stalled in the each of the versioning schemes.
-
+If a workflow never continues it means the conditions for getting stalled are still present and will need to be addressed. See the specific reasons for getting stalled in the each of the versioning strategies.
 {{% /alert %}}
 
 
 ### Named Workflow Versioning
 
-This is the traditional way of versioning workflows. The whole workflow code is versioned. This is the easiest way to version workflows and is the recommended way to version workflows.
+With named workflows the entire workflow code is versioned. This is the easiest way and recommended way to version workflows due to it's simplicity.
 
-The different SDKs will expose a way to register multiple handlers for the same workflow name, and will have a way to specify which one is the latest version.
+The language SDKs each expose a way to register multiple handlers for the same workflow name, and will have an _is latest_ flag to specify which workflow is the latest version.
 
 {{< tabpane text=true >}}
 
@@ -285,15 +284,15 @@ def workflow_v2(ctx: wf.DaprWorkflowContext):
 
 {{< /tabpane >}}
 
-In this versioning scheme, a workflow that started in a specific version will always use the same version of the workflow code even if the workflow code is updated and that version is no longer the latest version.
+In this versioning strategy, a workflow that started in a specific version will always use the same version of the workflow code when being replayed even if the workflow code is updated and that version is no longer the latest.
 
 New workflow instances will always use the latest version of the workflow code.
 
-When the SDK receives a request to run a workflow in a version that is not registered, the workflow will stall. This can happen naturally during Kubernetes rollouts, but can also happen if a version is removed while some workflow instances are still using it. The best practice is that versions shouldn't be deleted at all unless the workflow is no longer in use altogether to avoid such an inadvertent stall.
+When the SDK receives a request to run a workflow in a version that is not registered, the workflow will stall. This can happen naturally during Kubernetes rollouts, but can also happen if a version is removed while some workflow instances are still using it. The best practice is that versions shouldn't be deleted at all, unless it's guaranteed that there are no more in-flight workflow instances or planned workflow reruns for that version.
 
 ### Patching
 
-This versioning approach allows you to introduce deterministic changes to a specific part of an existing workflow, rather than creating an entirely new version of the whole workflow. The patching mechanism ensures these targeted changes remain deterministic, whereas without this approach, making such modifications within the workflow code would result in non-determinism. This is especially useful when you want to update or improve just one section of a workflow without duplicating all of its logic.
+The patching strategy allows you to introduce deterministic changes to a specific part of an existing workflow, rather than creating an entirely new version of the entire workflow. The patching mechanism ensures these targeted changes remain deterministic, whereas without this approach, making such modifications within the workflow code would result in non-determinism. This is especially useful when you want to update or improve just one section of a workflow without duplicating all of its logic.
 
 To use patching, add a patch check with a stable, unique name (for example, `use-sms`) and branch your workflow logic based on the boolean return value. This lets you keep the original code path for workflow instances that haven't recorded the patch, while enabling the updated code path (such as calling a new activity) for instances where the patch has been applied. The following example checks if the `use-sms` patch has been applied to this workflow instance. If so, the `SendSMS` activity is executed; otherwise, it falls back to `SendEmail`.
 
@@ -338,13 +337,12 @@ def workflow(ctx: wf.DaprWorkflowContext):
 
 {{< /tabpane >}}
 
-In this versioning scheme, new workflow instances will take the patched code path, but existing workflow instances that are already running at the time the patch is introduced will continue to use the original code path.
-
+In this versioning strategy, new workflow instances will take the patched code path, but existing workflow instances that are in-flight at the time the patch is introduced will continue to use the original code path.
 Patch checks are recorded in the workflow instance history the first time they are evaluated. This means you can safely check the same patch multiple times throughout the workflow, and all checks will resolve the same way for that workflow instance.
 
 The list of patches that are applied to a workflow are stored in the workflow's history, so it's important to be mindful about the amount of patches that are applied to a workflow so the workflow state doesn't grow too large. Consider transitioning to a named workflow version and removing all your patches when your patch logic grows unwieldy.
 
-There are multiple reasons for workflows to stall when using this versioning scheme:
+There are multiple reasons for workflows to stall when using this versioning strategy:
 - Removing (or renaming) a patch check.
 - Changing the order of patch checks. It's required to keep the same order of checks throughout the workflow code.
 
