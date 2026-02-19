@@ -183,6 +183,13 @@ When using Redis Sentinel for high availability, set `redisType` to `"node"`, en
         value: "mymaster"
     ```
 
+## Resiliency and redelivery
+
+The Redis Streams pubsub component honors the [Dapr resiliency policy]({{% ref "resiliency-overview" %}}). After your 
+application handler returns (success, error, RETRY, or DROP), the component acknowledges the message to Redis. Redis 
+then stops redelivering that message. Retries and dead-letter behavior are controlled by your resiliency policy (for 
+example, `maxRetries` and retry duration), not by Redis indefinitely.
+
 ## Related links
 - [Basic schema for a Dapr component]({{% ref component-schema %}})
 - Read [this guide]({{% ref "howto-publish-subscribe.md#step-2-publish-a-topic" %}}) for instructions on configuring pub/sub components
