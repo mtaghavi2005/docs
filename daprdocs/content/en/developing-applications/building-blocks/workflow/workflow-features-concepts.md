@@ -815,15 +815,15 @@ responsible for being able to deserialize different outputs over time) or adopt 
 optional properties to include new expected output values.
 
 ### Updating workflow code
-Make sure updates you make to the workflow code maintain its determinisim. Here are a few example of code updates 
+Make sure updates you make to the workflow code maintain its determinism. Here are a few example of code updates 
 that can break workflow determinism:
 - **Changing the workflow function signature**: Changing the name, input, or output of a workflow or activity is 
   considered a breaking change and must be avoided.
 - **Changing the number or order of workflow tasks**: Changing the number or order of workflow tasks causes a 
   workflow's history to no longer match the workflow code and may result in runtime errors or other unexpected behavior.
 
-To work around these constraints, use the workflow versioning concepts described above to patch and introduce new 
-named workflow versions to incorporate changes to your workflows deterministically.
+To work around these constraints, use the workflow [versioning](#versioning) concepts described above to 
+patch and introduce new named workflow versions to incorporate changes to your workflows deterministically.
 
 ## Next steps
 
