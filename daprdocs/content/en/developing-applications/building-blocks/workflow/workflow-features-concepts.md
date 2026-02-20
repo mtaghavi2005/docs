@@ -419,7 +419,7 @@ are running against that version.
 {{% tab ".NET" %}}
 
 .NET uses a source generator to automatically identify and register your workflow versions, so no manual 
-registration is necessary. By default, .NET uses a built-in and configurably numerical versioning strategy where the 
+registration of workflows is necessary (the activities do need to be registered). By default, .NET uses a built-in and configurably numerical versioning strategy where the 
 version is provided as a suffix on the name. See the .NET SDK documentation on how to change versioning strategies 
 or configuration and how to set up versioning in your application.
 
