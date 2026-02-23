@@ -213,7 +213,7 @@ by which you would explicitly supply an `is_latest` flag to indicate which versi
 
 When the SDK receives a request to run a workflow in a version that is not registered, the workflow will stall. This
 can happen naturally during application rollouts, but can also happen if a version is removed while some workflow
-instances are still using it. Our recommendation is that older named workflow versions should not be deleted at all
+instances are still using it. The recommendation is that older named workflow versions should not be deleted at all
 unless you've independently confirmed that there are no outstanding (in-flight or dormant) workflow instances that
 are
 running against that version.
