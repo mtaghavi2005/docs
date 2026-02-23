@@ -142,9 +142,6 @@ If the `oauth2TokenCAPEM` field is omitted then the system's certificate pool is
 | oauth2ClientSecret | N | OIDC client secret. Required if using `oauth2ClientID` (not `oauth2ClientSecretPath`). | `"my-client-secret"` |
 | oauth2ClientSecretPath | N | Plain text file with client secret. Requires `oauth2ClientID` and `oauth2TokenURL`. | `"/path/to/client_secret.txt"` |
 | oauth2TokenCAPEM | N | CA PEM certificate bundle to connect to the OAuth2 issuer. If not defined, the system's certificate pool will be used. | `"---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"` |
-| oauth2ClientID | N | OIDC client ID. Must not be empty. | `"my-client-id"` |
-| oauth2ClientSecret | N | OIDC client secret. Must not be empty. | `"my-client-secret"` |
-| oauth2ClientSecretPath | N | The path to the OAuth Client Secret. | `"/path/to/oauth2/client_secret.json"` |
 | oauth2Audiences | N | Comma separated list of audiences to request for. Must not be empty. | `"my-audience-1,my-audience-2"` |
 | oauth2Scopes | N | Comma separated list of scopes to request. Must not be empty. | `"openid,profile,email"` |
 
@@ -177,6 +174,68 @@ spec:
     value: "openid,profile,email"
   - name: oauth2ClientSecretPath
     value: "/path/to/oauth2/client_secret.json"
+```
+
+#### Using a JSON credentials file
+
+You can store credentials in a JSON file with the following format:
+
+```json
+{
+  "client_id": "my-client-id",
+  "client_secret": "my-client-secret",
+  "issuer_url": "https://oauth.example.com/o/oauth2/token"
+}
+```
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "pulsar.example.com:6650"
+  - name: oauth2CredentialsFile
+    value: "/path/to/oauth2/credentials.json"
+  - name: oauth2TokenCAPEM
+    value: "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"
+  - name: oauth2Audiences
+    value: "my.pulsar.example.com,another.pulsar.example.com"
+  - name: oauth2Scopes
+    value: "openid,profile,email"
+```
+
+#### Using a plain text secret file
+
+You can store just the client secret in a plain text file:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "pulsar.example.com:6650"
+  - name: oauth2TokenURL
+    value: https://oauth.example.com/o/oauth2/token
+  - name: oauth2ClientID
+    value: my-client-id
+  - name: oauth2ClientSecretPath
+    value: "/path/to/oauth2/client_secret.txt"
+  - name: oauth2TokenCAPEM
+    value: "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"
+  - name: oauth2Audiences
+    value: "my.pulsar.example.com,another.pulsar.example.com"
+  - name: oauth2Scopes
+    value: "openid,profile,email"
 ```
 
 #### Using a JSON credentials file
