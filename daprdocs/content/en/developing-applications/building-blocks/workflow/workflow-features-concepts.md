@@ -545,7 +545,7 @@ It is recommended that you retain old workflow versions until you're completely 
 (including deferred with a long-running timer) that uses any of your old workflow versions.
 
 Workflow versioning doesn't address changing the types of inputs and outputs of the workflows themselves. As general
-guidance, we recommend either returning serialized values like strings (making the consumer of the output
+guidance, it is recommended to either return serialized values like strings (making the consumer of the output
 responsible for being able to deserialize different outputs over time) or adopt complex types that incorporate
 optional properties to include new expected output values.
 
