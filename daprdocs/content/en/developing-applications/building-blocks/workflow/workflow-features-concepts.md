@@ -533,7 +533,7 @@ applying several patches:
 - You need to make another workflow tweak, but can't figure out how to apply a patch that doesn't break the
   determinism guarantee.
 
-At this point, our recommendation is that you introduce a named version of your workflow. Copy your existing
+At this point, the recommendation is that you introduce a named version of your workflow. Copy your existing
 workflow, change its name to reflect whatever versioning strategy you're using in your SDK and refactor to remove all
 your patches and retain only your intended "latest" logic. Apply your new changes (no need for a patch here – it's a
 new workflow) and deploy it.
