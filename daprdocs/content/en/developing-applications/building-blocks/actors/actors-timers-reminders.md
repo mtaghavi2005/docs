@@ -47,9 +47,9 @@ Supported formats:
 Only available on **reminders**.
 
 `overwrite` is an optional boolean parameter that indicates whether to overwrite an existing reminder with the same name.
-If `overwrite` is set to `true`, any existing reminder with the same name will be replaced by the new configuration.
-If `overwrite` is set to `false` or omitted, and a reminder with the same name already exists, the operation will fail with a already exists error.
-Note that overwriting an existing reminder will reset its an error.state, including the number of invocations and the next trigger time, just like creating a new reminder.
+If `overwrite` is set to `true`, any existing reminder with the same name is replaced by the new configuration.
+If `overwrite` is set to `false` or omitted, and a reminder with the same name already exists, the operation fails with a already exists error.
+Note that overwriting an existing reminde resets its a `error.state`, including the number of invocations and the next trigger time, just like creating a new reminder.
 
 ---
 Only available on **reminders**.
@@ -164,7 +164,7 @@ Refer [api spec]({{% ref "actors_api#invoke-reminder" %}}) for more details.
 
 ## Error handling
 
-When an actor's method completes successfully, the runtime will continue to invoke the method at the specified timer or reminder schedule.
+When an actor's method completes successfully, the runtime continues to invoke the method at the specified timer or reminder schedule.
 To allow actors to recover from failures and retry after a crash or restart, you can persist an actor's state by configuring a state store, like Redis or Azure Cosmos DB.
 
 If an invocation of the method fails, the timer is not removed. Timers are only removed when:
