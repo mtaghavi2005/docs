@@ -208,7 +208,7 @@ SDKs receive a request to run a new workflow, it chooses to run the latest versi
 there's is no need to handle any compensation logic between versions.
 
 The language SDKs may expose a way to register versions when using the same workflow name, but this varies by SDK,
-so please refer to the documentation for your specific SDK for more information. For example, some may use a mechanism
+so refer to the documentation for a specific SDK for more information. For example, some may use a mechanism
 by which you would explicitly supply an `is_latest` flag to indicate which version is the latest.
 
 When the SDK receives a request to run a workflow in a version that is not registered, the workflow will stall. This
