@@ -525,7 +525,7 @@ task.Await(nil)
 
 ### Versioning Process Guidance
 
-Because named workflows are fully compatible with patches, our intent is that changes to your workflow are initially
+Because named workflows are fully compatible with patches, the approach is that changes to your workflow are initially
 made by applying patches to your existing workflow logic. Eventually you'll hit one of the following problems after
 applying several patches:
 - You're concerned about the overhead to your workflow state history because of the number of applied patches;
