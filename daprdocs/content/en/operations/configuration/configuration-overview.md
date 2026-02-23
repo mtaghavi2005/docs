@@ -130,7 +130,7 @@ turns on tracing for the sidecar.
 | `OTEL_EXPORTER_OTLP_INSECURE` | Sets the connection to the endpoint as unencrypted (true/false) |
 | `OTEL_EXPORTER_OTLP_PROTOCOL` | Transport protocol (`grpc`, `http/protobuf`, `http/json`) |
 | `OTEL_EXPORTER_OTLP_TRACES_HEADERS` | Comma-separated list of `key=value` headers for the OTLP traces exporter |
-| `OTEL_EXPORTER_OTLP_TRACES_TIMEOUT` | Timeout in milliseconds for the OTLP traces exporter (e.g. `30000`) |
+| `OTEL_EXPORTER_OTLP_TRACES_TIMEOUT` | Timeout in milliseconds for the OTLP traces exporter (for example `30000`) |
 
 See [Observability distributed tracing]({{% ref "tracing-overview.md" %}}) for more information.
 
