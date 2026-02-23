@@ -35,7 +35,7 @@ To best understand how versioning works and how to use it effectively, it helps 
 solving and why versioning is necesssary at all. Workflows are required to be deterministic meaning that every time they are run, they produce precisely the same output as the last time.
 
 This is a key concept because Dapr Workflows are implemented to use an event sourcing approach to persist the
-workflow state. As activities and child workflows are executed within the workflow, we're maintaining a history that
+workflow state. As activities and child workflows are executed within the workflow, Dapr is maintaining a history that
 logs the inputs and outputs at each of those boundary executions. As each completes, we persist the updated event
 history then re-invoke the workflow from the top (this is called a "replay"). This time, when it hits one of these
 activities or child workflows, it substitutes in the already-realized output and skips re-executing it and repeats.
