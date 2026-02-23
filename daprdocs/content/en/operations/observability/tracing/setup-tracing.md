@@ -42,7 +42,7 @@ The following table lists the properties for tracing:
 | `otel.isSecure` | bool | Is the connection to the endpoint address encrypted.
 | `otel.protocol` | string | Set to `http` or `grpc` protocol.
 | `otel.headers` | array | Headers to include in OTLP exporter requests. Each entry has a `name` and either a plaintext `value` or a `secretKeyRef` to reference a Kubernetes secret.
-| `otel.timeout` | string | Timeout for OTLP exporter requests (e.g. `30s`, `5m`).
+| `otel.timeout` | string | Timeout for OTLP exporter requests (for example `30s`, `5m`).
 | `zipkin.endpointAddress` | string | Set the Zipkin server URL. If this is used, you do not need to specify the `otel` section.
 
 To enable tracing, use a configuration file (in self hosted mode) or a Kubernetes configuration object (in Kubernetes mode). For example, the following configuration object changes the sample rate to 1 (every span is sampled), and sends trace using OTEL protocol to the OTEL server at localhost:4317
