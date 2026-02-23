@@ -204,7 +204,7 @@ register this with your SDK. A registry will be built of each workflow so that a
 workflow name to execute and the SDK will either route to the old workflow (if in-flight) or to the newer version.
 
 Do note that across all SDKs, the runtime does not migrate workflows between versions sequentially. Rather, when the
-SDKs receive a request to run a new workflow, it will opt to run the latest version, not simply the "next" one, so
+SDKs receive a request to run a new workflow, it chooses to run the latest version, not simply the "next" one, so
 there's is no need to handle any compensation logic between versions.
 
 The language SDKs may expose a way to register versions when using the same workflow name, but this will vary by SDK,
