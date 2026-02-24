@@ -9,7 +9,7 @@ description: "Low-level description of the Workflow building block internals."
 # Workflow Management API
 
 The Workflow Management API allows Dapr clients to control the lifecycle of workflow instances. These APIs are exposed 
-via the standard Dapr gRPC endpoint.
+via the standard Dapr gRPC endpoint and are typically made available via the SDKs.
 
 ## gRPC Service Definition
 
