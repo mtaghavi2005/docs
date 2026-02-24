@@ -32,7 +32,8 @@ registry.AddVersionedOrchestrator("MyWorkflow", "v1", false, MyWorkflowV1)
 
 ## Sidecar Versioning
 
-The Dapr sidecar tracks which version of a workflow an instance is running. This information is stored in the workflow 
+The Dapr sidecar tracks which named version of a workflow an instance is running as well as the list of applied
+patches observed up to that point in the workflow execution. This information is stored in the workflow 
 history within the `OrchestratorStarted` event's `version` field.
 
 ```protobuf
@@ -42,5 +43,8 @@ message OrchestrationVersion {
 }
 ```
 
-When an instance is resumed (e.g., after an activity completes), the Dapr engine ensures it is dispatched to a worker 
-that has the correct version of the workflow registered.
+When an instance is resumed (e.g., after an activity completes), the Dapr engine is responsible for recovering from
+stalls introduced by a version mismatch on the client. It does so by monitoring changes to the placement table, indicating
+that a new SDK client has connected (potentially representing a newer replica instance of the app) and dispatching a 
+repeat of the last event in an attempt to retry the operation. This time, if the SDK is able to successfully complete
+the task, the runtime will chnage the workflow status out of `Stalled` and back to `Running`.
