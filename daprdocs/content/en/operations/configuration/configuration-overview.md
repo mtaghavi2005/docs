@@ -107,7 +107,7 @@ The following table lists the properties for tracing:
 | `otel.endpointAddress` | string | Set the Open Telemetry (OTEL) server address to send traces to. This may or may not require the https:// or http:// depending on your OTEL provider.
 | `otel.isSecure` | bool | Is the connection to the endpoint address encrypted
 | `otel.protocol` | string | Set to `http` or `grpc` protocol
-| `otel.headers` | array | Headers to include in OTLP exporter requests. Each entry has a `name` and either a plaintext `value` or a `secretKeyRef` to reference a Kubernetes secret.
+| `otel.headers` | array | Headers to include in OTLP exporter requests. Each entry has a `name` and either a plaintext `value` or a `secretKeyRef` to reference a Kubernetes secret (only Kubernetes secrets are supported, no other secret type)
 | `otel.timeout` | string | Timeout for OTLP exporter requests (for example `30s`, `5m`).
 | `zipkin.endpointAddress` | string | Set the Zipkin server address to send traces to. This should include the protocol (http:// or https://) on the endpoint.
 
