@@ -205,9 +205,13 @@ Learn more about [external system interaction.]({{% ref "workflow-patterns.md#ex
 
 ## Purging
 
-Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state. 
+Workflow state can be purged from a state store, purging all its history and removing all metadata related to a specific workflow instance. The purge capability is used for workflows that have run to a `COMPLETED`, `FAILED`, or `TERMINATED` state.
 
 Learn more in [the workflow API reference guide]({{% ref workflow_api.md %}}).
+
+## Versioning
+
+Workflow code is long-running and must remain deterministic during updates. For details on patching and named workflow versioning, see [Workflow versioning]({{% ref workflow-versioning.md %}}).
 
 ## Limitations
 
@@ -215,10 +219,10 @@ Learn more in [the workflow API reference guide]({{% ref workflow_api.md %}}).
 
 To take advantage of the workflow replay technique, your workflow code needs to be deterministic. For your workflow code to be deterministic, you may need to work around some limitations.
 
-#### Workflow functions must call deterministic APIs.
+#### Workflow functions must call deterministic APIs
 APIs that generate random numbers, random UUIDs, or the current date are _non-deterministic_. To work around this limitation, you can:
- - Use these APIs in activity functions, or 
- - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.  
+ - Use these APIs in activity functions, or
+ - (Preferred) Use built-in equivalent APIs offered by the SDK. For example, each authoring SDK provides an API for retrieving the current time in a deterministic manner.
 
 For example, instead of this:
 
@@ -278,7 +282,7 @@ Do this:
 // Do this!!
 DateTime currentTime = context.CurrentUtcDateTime;
 Guid newIdentifier = context.NewGuid();
-string randomString = await context.CallActivityAsync<string>(nameof("GetRandomString")); //Use "nameof" to prevent specifying an activity name that does not exist in your application 
+string randomString = await context.CallActivityAsync<string>(nameof("GetRandomString")); //Use "nameof" to prevent specifying an activity name that does not exist in your application
 ```
 
 {{% /tab %}}
@@ -503,7 +507,7 @@ ctx.createTimer(Duration.ofSeconds(5)).await();
 
 {{% tab "JavaScript" %}}
 
-Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions. 
+Since the Node.js runtime doesn't guarantee that asynchronous functions are deterministic, always declare JavaScript workflow as synchronous generator functions.
 
 {{% /tab %}}
 
@@ -519,22 +523,42 @@ task.Await(nil)
 
 {{< /tabpane >}}
 
+### Versioning Process Guidance
+
+Because named workflows are fully compatible with patches, the approach is that changes to your workflow are initially
+made by applying patches to your existing workflow logic. Eventually you'll hit one of the following problems after
+applying several patches:
+- You're concerned about the overhead to your workflow state history because of the number of applied patches;
+- The golden path through your workflow logic is hard to follow;
+- You need to make another workflow tweak, but can't figure out how to apply a patch that doesn't break the
+  determinism guarantee.
+
+At this point, the recommendation is that you introduce a named version of your workflow. Copy your existing
+workflow, change its name to reflect whatever versioning strategy you're using in your SDK and refactor to remove all
+your patches and retain only your intended "latest" logic. Apply your new changes (no need for a patch here – it's a
+new workflow) and deploy it.
+
+Here, apply patches again as needed to address future changes and when necessary, introduce another named workflow
+version and continue. Repeat this process indefinitely.
+
+It is recommended that you retain old workflow versions until you're completely confident that nothing is in-flight
+(including deferred with a long-running timer) that uses any of your old workflow versions.
+
+Workflow versioning doesn't address changing the types of inputs and outputs of the workflows themselves. As general
+guidance, it is recommended to either return serialized values like strings (making the consumer of the output
+responsible for being able to deserialize different outputs over time) or adopt complex types that incorporate
+optional properties to include new expected output values.
 
 ### Updating workflow code
+Make sure updates you make to the workflow code maintain its determinism. Here are a few example of code updates
+that can break workflow determinism:
+- **Changing the workflow function signature**: Changing the name, input, or output of a workflow or activity is
+  considered a breaking change and must be avoided.
+- **Changing the number or order of workflow tasks**: Changing the number or order of workflow tasks causes a
+  workflow's history to no longer match the workflow code and may result in runtime errors or other unexpected behavior.
 
-Make sure updates you make to the workflow code maintain its determinism. A couple examples of code updates that can break workflow determinism:
-
-- **Changing workflow function signatures**:
-   Changing the name, input, or output of a workflow or activity function is considered a breaking change and must be avoided.
-
-- **Changing the number or order of workflow tasks**:
-   Changing the number or order of workflow tasks causes a workflow instance's history to no longer match the code and may result in runtime errors or other unexpected behavior.
-
-To work around these constraints:
-
-- Instead of updating existing workflow code, leave the existing workflow code as-is and create new workflow definitions that include the updates.
-- Upstream code that creates workflows should only be updated to create instances of the new workflows.
-- Leave the old code around to ensure that existing workflow instances can continue to run without interruption. If and when it's known that all instances of the old workflow logic have completed, then the old workflow code can be safely deleted.
+To work around these constraints, use the workflow [versioning]({{% ref workflow-versioning.md %}}) concepts described in the versioning guide to
+patch and introduce new named workflow versions to incorporate changes to your workflows deterministically.
 
 ## Next steps
 
@@ -545,9 +569,14 @@ To work around these constraints:
 - [Try out Dapr Workflow using the quickstart]({{% ref workflow-quickstart.md %}})
 - [Workflow overview]({{% ref workflow-overview.md %}})
 - [Workflow API reference]({{% ref workflow_api.md %}})
-- Try out the following examples: 
+- Try out the following examples:
    - [Python](https://github.com/dapr/python-sdk/tree/master/examples/demo_workflow)
    - [JavaScript](https://github.com/dapr/js-sdk/tree/main/examples/workflow)
    - [.NET](https://github.com/dapr/dotnet-sdk/tree/master/examples/Workflow)
    - [Java](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/workflows)
    - [Go](https://github.com/dapr/go-sdk/tree/main/examples/workflow/README.md)
+
+
+
+
+
