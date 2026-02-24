@@ -18,7 +18,7 @@ There are two protocol surfaces:
     - Start, terminate, pause, resume, re-run, purge and query workflow instances.
 2. Execution API (Task Hub Protocol):
     - Worker facing, used to receive orchestration/activity work items and to report completion (e.g., via 
-   `TaskHubSidecarService`).
+    `TaskHubSidecarService`).
 
 [//]: # (graph LR)
 
