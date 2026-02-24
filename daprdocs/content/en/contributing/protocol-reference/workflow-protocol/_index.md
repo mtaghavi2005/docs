@@ -14,7 +14,7 @@ Dapr Workflow implements a sidecar-as-scheduler pattern: the Dapr runtime (sidec
 the application SDK acts as the Workflow Worker. All control and execution traffic flows over gRPC.
 
 There are two protocol surfaces:
-1. Management API (standard Dapr gRPC):
+1. Management API (standard Dapr gRPC accessible via SDK):
     - Start, terminate, pause, resume, re-run, purge and query workflow instances.
 2. Execution API (Task Hub Protocol):
     - Worker facing, used to receive orchestration/activity work items and to report completion (e.g., via 
