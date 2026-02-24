@@ -65,7 +65,7 @@ Orchestrators are replayed from their event history to rebuild deterministic sta
 
 ### Deterministic Orchestrators
 Orchestrator code must be side-effect free except via engine-mediated effects. Control flow must be reproducible 
-during replay (e.g., no unguarded access to wall-clock APIs).
+during replay.
 
 ### At-least-once Activities, Exactly-once State Commit
 Activities may be delivered more than once. The engine ensures workflow state commits are idempotent and applied 
