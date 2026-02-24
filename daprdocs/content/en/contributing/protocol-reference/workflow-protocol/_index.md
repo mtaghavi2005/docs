@@ -41,17 +41,17 @@ Key Components
   results, failures, and heartbeats to the engine. Orchestration logic must be deterministic; activity logic need not 
   be.
 
-- ** Orchestration **
+- **Orchestration**
 
   The deterministic coordinator that defines the workflow. The engine drives orchestrations via history replay to 
   rebuild state and schedule outbound tasks (activities, sub-orchestrations, timers, external events).
 
-- ** Activity **
+- **Activity**
 
   The atomic unit of work. Activities are executed **at-least-once** and report results or failures back to the engine. 
   Idempotency is recommended and task execution identifiers are available on context to assist with this.
 
-- ** State Store & Backend **
+- **State Store & Backend**
 
   Workflow history and state are durably persisted. The engine typically implements a task hub pattern over the chosen 
   persistence and uses Dapr Actors as the default reliability substrate.
