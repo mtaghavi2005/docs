@@ -29,7 +29,7 @@ service TaskHubSidecarService {
 1.  **Connection**: The SDK opens a long-running bidirectional stream to `GetWorkItems`.
 2.  **Polling**: The SDK receives `WorkItem` messages from the stream.
 3.  **Execution**:
-    *   If the work item is an **Orchestration**, the SDK replays the history events to determine the next actions.
+    *   If the work item is an **Orchestration**, the SDK retrieves and replays the history events to determine the next actions.
     *   If the work item is an **Activity**, the SDK executes the activity logic.
 4.  **Completion**:
     *   For Orchestrations, the SDK calls `CompleteOrchestratorTask` with a list of actions to take.
