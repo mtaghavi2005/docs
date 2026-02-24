@@ -172,6 +172,70 @@ spec:
     value: "my.pulsar.example.com,another.pulsar.example.com"
   - name: oauth2Scopes
     value: "openid,profile,email"
+  - name: oauth2ClientSecretPath
+    value: "/path/to/oauth2/client_secret.json"
+```
+
+#### Using a JSON credentials file
+
+You can store credentials in a JSON file with the following format:
+
+```json
+{
+  "client_id": "my-client-id",
+  "client_secret": "my-client-secret",
+  "issuer_url": "https://oauth.example.com/o/oauth2/token"
+}
+```
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "pulsar.example.com:6650"
+  - name: oauth2CredentialsFile
+    value: "/path/to/oauth2/credentials.json"
+  - name: oauth2TokenCAPEM
+    value: "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"
+  - name: oauth2Audiences
+    value: "my.pulsar.example.com,another.pulsar.example.com"
+  - name: oauth2Scopes
+    value: "openid,profile,email"
+```
+
+#### Using a plain text secret file
+
+You can store just the client secret in a plain text file:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.pulsar
+  version: v1
+  metadata:
+  - name: host
+    value: "pulsar.example.com:6650"
+  - name: oauth2TokenURL
+    value: https://oauth.example.com/o/oauth2/token
+  - name: oauth2ClientID
+    value: my-client-id
+  - name: oauth2ClientSecretPath
+    value: "/path/to/oauth2/client_secret.txt"
+  - name: oauth2TokenCAPEM
+    value: "---BEGIN CERTIFICATE---\n...\n---END CERTIFICATE---"
+  - name: oauth2Audiences
+    value: "my.pulsar.example.com,another.pulsar.example.com"
+  - name: oauth2Scopes
+    value: "openid,profile,email"
 ```
 
 #### Using a JSON credentials file
