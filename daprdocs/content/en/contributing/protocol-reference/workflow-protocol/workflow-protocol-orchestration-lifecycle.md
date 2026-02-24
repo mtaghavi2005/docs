@@ -89,6 +89,17 @@ Dapr provides a **Patching** mechanism (e.g., `ctx.IsPatched("patch-id")`) to sa
 *   **Safety**: The Dapr engine validates that the sequence of patches encountered during replay exactly matches the 
     sequence in history. If there's a mismatch, the workflow enters a **Stalled** state to prevent data corruption.
 
+### 3. Named Versions (In-flight updates)
+Dapr also provides a **Named Versioning** mechanism wherein the SDK maintains a registry of available named workflow
+versions. When it receives a request to initialize a new workflow by name, it'll consult the registry to determine
+if the name is a match for a different workflow version than the workflow name specified and is responsible for
+redirecting the request to the intended "latest" version.
+
+* **Logic Branching**: The SDK provides an API to register different versions for a given workflow name.
+* **Replay Consistency**: The request to run a workflow may contain a property specifying a specific workflow name to
+execute. This ensures that in-flight workflows will always run using the same workflow version whereas new workflows
+will use the latest available version.
+
 ### 3. Stalled State
 
 A workflow instance enters the `STALLED` state when the engine detects an unrecoverable condition that requires manual 
