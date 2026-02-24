@@ -107,7 +107,7 @@ potentially a different `task_id` (or the same, depending on the backend impleme
 Because activities might be executed more than once (e.g., if the worker crashes after execution but before reporting 
 completion), it is recommended that activity logic be idempotent where possible.
 
-## Comparison with Orchestrations
+## Comparison with Workflows
 
 | Feature | Orchestration | Activity |
 | :--- | :--- | :--- |
