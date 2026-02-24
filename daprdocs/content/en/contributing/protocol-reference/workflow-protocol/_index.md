@@ -15,7 +15,7 @@ the application SDK acts as the Workflow Worker. All control and execution traff
 
 There are two protocol surfaces:
 1. Management API (standard Dapr gRPC):
-    - Start, terminate, pause, resume, and query workflow instances.
+    - Start, terminate, pause, resume, re-run, purge and query workflow instances.
 2. Execution API (Task Hub Protocol):
     - Worker facing, used to receive orchestration/activity work items and to report completion (e.g., via 
    `TaskHubSidecarService`).
@@ -49,7 +49,7 @@ Key Components
 - ** Activity **
 
   The atomic unit of work. Activities are executed **at-least-once** and report results or failures back to the engine. 
-  Idempotency is recommended.
+  Idempotency is recommended and task execution identifiers are available on context to assist with this.
 
 - ** State Store & Backend **
 
