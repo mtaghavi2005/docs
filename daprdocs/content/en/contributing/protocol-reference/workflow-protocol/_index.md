@@ -80,6 +80,8 @@ executors from the engine’s perspective.
   - **Start Workflow**: Create and persist an initial history event; return instance metadata
   - **Terminate / Pause/ Resume**: Drive lifecycle transitions through persisted control events.
   - **Query**: Retrieve instance status, history, output, failure details, and custom metadata.
+  - **Re-run**: Start a new workflow instance from a history event.
+  - **Purge**: Proactively clear workflow history and state.
 
 > **Note**: See: [Management API specification]({{% ref workflow-protocol-management-api %}}) for exact RPC shapes, 
 > error codes and semantics.
