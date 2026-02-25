@@ -116,7 +116,7 @@ executors from the engine’s perspective.
   - The engine safeguards idempotence and exactly-once commit of orchestration state.
 6. Completion
   - Orchestration returns an output (success) or a failure (exception details).
-  - Final state and output are persisted; status queries refelct the terminal state.
+  - Final state and output are persisted; status queries reflect the terminal state.
 
 # Protocol Principles
 - **GRIEF (GRpc IntErFace)**: All worker/engine and client/engine communication is gRPC.
