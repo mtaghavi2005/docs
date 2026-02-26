@@ -47,9 +47,9 @@ Supported formats:
 Only available on **reminders**.
 
 `overwrite` is an optional boolean parameter that indicates whether to overwrite an existing reminder with the same name.
-If `overwrite` is set to `true`, any existing reminder with the same name is replaced by the new configuration.
-If `overwrite` is set to `false` or omitted, and a reminder with the same name already exists, the operation fails with a already exists error.
-Note that overwriting an existing reminde resets its a `error.state`, including the number of invocations and the next trigger time, just like creating a new reminder.
+If `overwrite` is set to `true`, any existing reminder with the same name will be replaced by the new configuration.
+If `overwrite` is set to `false` or omitted, and a reminder with the same name already exists, the operation will fail with a already exists error.
+Note that overwriting an existing reminder will reset its an error.state, including the number of invocations and the next trigger time, just like creating a new reminder.
 
 ---
 Only available on **reminders**.
