@@ -164,7 +164,7 @@ Refer [api spec]({{% ref "actors_api#invoke-reminder" %}}) for more details.
 
 ## Error handling
 
-When an actor's method completes successfully, the runtime will continue to invoke the method at the specified timer or reminder schedule.
+When an actor's method completes successfully, the runtime continues to invoke the method at the specified timer or reminder schedule.
 To allow actors to recover from failures and retry after a crash or restart, you can persist an actor's state by configuring a state store, like Redis or Azure Cosmos DB.
 
 If an invocation of the method fails, the timer is not removed. Timers are only removed when:

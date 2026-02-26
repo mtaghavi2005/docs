@@ -125,7 +125,7 @@ Errors like the following suggest that the workflow client is not running:
 failed to purge orchestration state: rpc error: code = FailedPrecondition desc = failed to purge orchestration state: failed to lookup actor: api error: code = FailedPrecondition desc = did not find address for actor
 ```
 
-It is possible to purge a workflow _without_ a workflow application running by using the `--force` flag; however, this is should only be used when you are certain that no workflow instances are currently running, as it **will** otherwise corrupt the workflow state machine.
+It is possible to purge a workflow _without_ a workflow application running by using the `--force` flag; however, this should only be used when you are certain that no workflow instances are currently running, as it **will** otherwise corrupt the workflow state machine.
 {{% /alert %}}
 
 ```bash
