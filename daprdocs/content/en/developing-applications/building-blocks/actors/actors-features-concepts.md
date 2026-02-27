@@ -8,7 +8,7 @@ aliases:
   - "/developing-applications/building-blocks/actors/actors-background"
 ---
 
-Now that you've learned about the [actor building block]({{% ref "actors-overview" %}}) at a high level, let's deep dive into the features and concepts included with actors in Dapr. 
+Now that you've learned about the [actor building block]({{% ref "actors-overview" %}}) at a high level, let's deep dive into the features and concepts included with actors in Dapr.
 
 ## Actor lifetime
 
@@ -28,7 +28,7 @@ An actor is automatically activated (causing an actor object to be constructed) 
 
 To provide scalability and reliability, actors instances are distributed throughout the cluster and Dapr automatically migrates them from failed nodes to healthy ones as required.
 
-Actors are distributed across the instances of the actor service, and those instance are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
+Actors are distributed across the instances of the actor service, and those instances are distributed across the nodes in a cluster. Each service instance contains a set of actors for a given actor type.
 
 ### Actor placement service
 
